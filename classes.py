@@ -1,4 +1,7 @@
 from typing import Dict, Tuple, List, NewType
+# FIXME: "To annotate arguments it is preferred to use abstract
+# collection types such as Mapping, Sequence, or AbstractSet."
+
 
 ElementID = NewType('ElementID', int)
 RoomID = NewType('RoomID', int)
