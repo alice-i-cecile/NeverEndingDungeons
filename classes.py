@@ -8,7 +8,7 @@ RoomID = NewType('RoomID', int)
 
 Position = Tuple[int, int]
 # oneof ("Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan")
-size =  NewType("Size", str)
+Size =  NewType("Size", str)
 Tags = List[str]
 
 # oneof (“Hostile”, “Unfriendly”, “Indifferent”, “Friendly”, “Helpful”)
