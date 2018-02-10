@@ -21,7 +21,7 @@ Skill = NewType("Skill", str)
 
 
 ConnectionType = NewType('ConnectionType', str)
-Connection = Tuple[Room, ConnectionType, Position]
+Connection = Tuple[RoomID, ConnectionType, Position]
 # oneof  (“Trivial”, “Easy”, “Medium”, “Difficult”, “Deadly”)
 Challenge = NewType('Challenge', str)
 # oneof (“Unsafe”, “Risky”, “Sheltered”, “Safe”)
@@ -86,10 +86,12 @@ class SkillCheck(Element):
         self.success = success
         self.failure = failure
 
+
+# FIXME: allow for the creation of partially completed rooms
 class Room:
     def __init__(self, id: RoomID,
                 shape: List[Position],
-                connections: List[Connection],
+                connections: AbstractSet[Connection],
                 elements: List[Element],
                 challenge: Challenge,
                 safety: Safety,
