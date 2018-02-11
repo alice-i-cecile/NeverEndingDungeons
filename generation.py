@@ -3,6 +3,8 @@ import random
 
 Dungeon = List[Room]
 
+#TODO: add a generate_element(element_type) function
+
 def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
     """Creates a barren, connected dungeon.
 
