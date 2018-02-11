@@ -39,7 +39,13 @@ def populate_room(room: Room) -> Room:
 
     for i in range(room.connections):
         room.connections[i][2] = 'BasicConnection'
-        room.connections[i][3] = (random.uniform(0,1), random.choice([0,1]))
+
+        # Rooms are connected left to right
+        # Ensure that the layout is geometrically possible
+        if room.connections[i][1] < room.id:
+            room.connections[i][3] = (random.uniform(0,1), 0)
+        else:
+            room.connections[i][3] = (random.uniform(0,1), 1)
 
     for i in range(random.randrange(1,5)):
         new_element = Element(description = str(i))

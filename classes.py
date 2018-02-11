@@ -2,6 +2,7 @@ from typing import Dict, Tuple, List, NewType
 # FIXME: "To annotate arguments it is preferred to use abstract
 # collection types such as Mapping, Sequence, or AbstractSet."
 
+# Cartesian grid, with origin in bottom-left corner
 Position = Tuple[int, int]
 # oneof ("Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan")
 Size =  NewType("Size", str)
