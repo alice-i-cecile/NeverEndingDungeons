@@ -1,7 +1,5 @@
 from typing import Dict, Tuple, List, NewType
-
-# TODO: describe this data type
-DungeonGraph = NewType("DungeonGraph", any)
+import random
 
 Dungeon = List[Room]
 
@@ -36,6 +34,25 @@ def populate_room(room: Room) -> Room:
     Returns:
         A Room with completed attributes.
     """
+
+    room.shape = [(0,0), (1,0), (1,1), (0,1)]
+
+    for i in range(room.connections):
+        room.connections[i][2] = 'BasicConnection'
+        room.connections[i][3] = (random.uniform(0,1), random.choice([0,1]))
+
+    for i in range(random.randrange(1,5)):
+        new_element = Element(description = str(i))
+        room.elements.append(new_element)
+
+    room.challenge = Challenge('Trivial')
+    room.safety = Safety('Safe')
+
+    room.flavour = 'A very boring room.'
+
+    room.tags.append('boring')
+
+    return room
 
 def generate_dungeon(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
     """Creates a dungeon from scratch.
