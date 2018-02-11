@@ -22,8 +22,8 @@ def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) 
 
     if layout == 'linear':
         for i in range(n_rooms - 1):
-            rooms[i].connections.add((RoomID(i+1), "", (0,0)))
-            rooms[i+1].connections.add((RoomID(i), "", (0,0)))
+            rooms[i].connections.append((RoomID(i+1), "", (0,0)))
+            rooms[i+1].connections.append((RoomID(i), "", (0,0)))
 
     return rooms
 
