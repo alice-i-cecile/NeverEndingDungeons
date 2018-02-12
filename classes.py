@@ -97,6 +97,7 @@ class Room:
                 safety = Safety(''): Safety,
                 flavour = '': str,
                 tags = []: Tags):
+        # RoomID corresponds to the room position in the Dungeon list
         self.id = id
         self.shape = shape
         self.connections = connections
