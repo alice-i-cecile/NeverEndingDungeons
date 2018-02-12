@@ -1,11 +1,10 @@
 from hypothesis import given, example
-from hypothesis.strategies import integers, sampled_from
+from hypothesis.strategies import integers, sampled_from, random_module
 import random
 
 # Element-level tests ####
-@given(integers(), sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'))
-def test_element_field_validity(seed, element_type):
-    random.seed(seed)
+@given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
+def test_element_field_validity(element_type):
     element = generate_element(element_type)
 
     valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
@@ -29,9 +28,8 @@ def test_element_field_validity(seed, element_type):
         assert all((i for i in element.ability) in valid_abilities)
 
 
-@given(integers(), sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'))
-def test_unchanged_element_defaults(seed, element_type):
-    random.seed(seed)
+@given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
+def test_unchanged_element_defaults(element_type):
     element = generate_element(element_type)
 
     assert element.description != ''
@@ -53,9 +51,8 @@ def test_unchanged_element_defaults(seed, element_type):
         assert element.failure != ''
 
 # Room level tests ####
-@given(integers())
-def test_elements_in_room(seed):
-    random.seed(seed)
+@given(random_module())
+def test_elements_in_room():
     room = populate_room(Room(id=1))
 
     # TODO: implement polygon checking
@@ -65,9 +62,8 @@ def test_elements_in_room(seed):
     for e in room.elements:
         assert is_in_room(e.location, room.shape)
 
-@given(integers())
-def test_room_field_validity(seed, n_rooms):
-    random.seed(seed)
+@given(random_module())
+def test_room_field_validity():
     room = populate_room(Room(id=1))
 
     valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
@@ -76,9 +72,8 @@ def test_room_field_validity(seed, n_rooms):
     valid_safetys = ['Unsafe', 'Risky', 'Sheltered', 'Safe']
     assert room.safety in valid_safetys
 
-@given(integers())
-def test_unchanged_room_defaults(seed, n_rooms):
-    random.seed(seed)
+@given(random_module())
+def test_unchanged_room_defaults():
     room = populate_room(Room(id=1))
 
     assert room.shape != []
@@ -90,17 +85,15 @@ def test_unchanged_room_defaults(seed, n_rooms):
     assert room.tags != []
 
 # Dungeon level tests ####
-@given(integers(), integers(min_value=1))
-def test_unique_roomID(seed, n_rooms):
-    random.seed(seed)
+@given(integers(min_value=1), random_module())
+def test_unique_roomID(n_rooms):
     dungeon = generate_dungeon(n_rooms)
 
     roomIDs = [r.id for r in dungeon]
     assert len(set(roomIds)) == len(roomIDs)
 
-@given(integers(), integers(min_value=1))
-def test_uniqueness_connections(seed, n_rooms):
-    random.seed(seed)
+@given(integers(min_value=1), random_module())
+def test_uniqueness_connections(n_rooms):
     dungeon = generate_dungeon(n_rooms)
 
     for room in dungeon:
@@ -109,9 +102,8 @@ def test_uniqueness_connections(seed, n_rooms):
             assert  len(set(connections_id)) == len(connections_id)
 
 #TODO: refactor so can be moved to room level tests
-@given(integers(), integers(min_value=1))
-def test_connections_on_wall(seed, n_rooms):
-    random.seed(seed)
+@given(integers(min_value=1), random_module())
+def test_connections_on_wall(n_rooms):
     dungeon = generate_dungeon(n_rooms)
 
     for room in dungeon:
@@ -126,9 +118,8 @@ def test_connections_on_wall(seed, n_rooms):
 
             assert (h or v)
 
-@given(integers(), integers(min_value=1))
-def test_bidirectional_connections(seed, n_rooms):
-    random.seed(seed)
+@given(integers(min_value=1), random_module())
+def test_bidirectional_connections(n_rooms):
     dungeon = generate_dungeon(n_rooms)
 
     for room_a in dungeon:
@@ -137,9 +128,8 @@ def test_bidirectional_connections(seed, n_rooms):
             connections_b = [c[0] for c in room_b.connections]
             assert room_a.id in connections_b
 
-@given(integers(), integers(min_value=1))
-def test_connection_side_matching(seed, n_rooms):
-    random.seed(seed)
+@given(integers(min_value=1), random_module())
+def test_connection_side_matching(n_rooms):
     dungeon = generate_dungeon(n_rooms)
 
     for room_a in dungeon:
