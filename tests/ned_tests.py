@@ -1,3 +1,5 @@
+from context import neverendingdungeon
+
 from hypothesis import given, example
 from hypothesis.strategies import integers, sampled_from, random_module
 import random
@@ -5,7 +7,7 @@ import random
 # Element-level tests ####
 @given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
 def test_element_field_validity(element_type):
-    element = generate_element(element_type)
+    element = neverending_dungeon.generation.generate_element(element_type)
 
     valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
     assert element.size in valid_sizes
@@ -30,7 +32,7 @@ def test_element_field_validity(element_type):
 
 @given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
 def test_unchanged_element_defaults(element_type):
-    element = generate_element(element_type)
+    element = neverending_dungeon.generation.generate_element(element_type)
 
     assert element.description != ''
     assert element.gm_notes != ''
@@ -53,7 +55,7 @@ def test_unchanged_element_defaults(element_type):
 # Room level tests ####
 @given(random_module())
 def test_elements_in_room():
-    room = populate_room(Room(id=1))
+    room = neverending_dungeon.generation.populate_room(Room(id=1))
 
     # TODO: implement polygon checking
     def is_in_room(location, polygon):
@@ -64,7 +66,7 @@ def test_elements_in_room():
 
 @given(random_module())
 def test_room_field_validity():
-    room = populate_room(Room(id=1))
+    room = neverending_dungeon.generation.populate_room(Room(id=1))
 
     valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
     assert room.challenge in valid_challenges
@@ -74,7 +76,7 @@ def test_room_field_validity():
 
 @given(random_module())
 def test_unchanged_room_defaults():
-    room = populate_room(Room(id=1))
+    room = neverending_dungeon.generation.populate_room(Room(id=1))
 
     assert room.shape != []
     # Connections are tested at the dungeon level
@@ -87,14 +89,14 @@ def test_unchanged_room_defaults():
 # Dungeon level tests ####
 @given(integers(min_value=1), random_module())
 def test_unique_roomID(n_rooms):
-    dungeon = generate_dungeon(n_rooms)
+    dungeon = neverending_dungeon.generation.generate_dungeon(n_rooms)
 
     roomIDs = [r.id for r in dungeon]
     assert len(set(roomIds)) == len(roomIDs)
 
 @given(integers(min_value=1), random_module())
 def test_uniqueness_connections(n_rooms):
-    dungeon = generate_dungeon(n_rooms)
+    dungeon = neverending_dungeon.generation.generate_dungeon(n_rooms)
 
     for room in dungeon:
         for connection in room_a.connections:
@@ -104,7 +106,7 @@ def test_uniqueness_connections(n_rooms):
 #TODO: refactor so can be moved to room level tests
 @given(integers(min_value=1), random_module())
 def test_connections_on_wall(n_rooms):
-    dungeon = generate_dungeon(n_rooms)
+    dungeon = neverending_dungeon.generation.generate_dungeon(n_rooms)
 
     for room in dungeon:
         for connection in room_a.connections:
@@ -120,7 +122,7 @@ def test_connections_on_wall(n_rooms):
 
 @given(integers(min_value=1), random_module())
 def test_bidirectional_connections(n_rooms):
-    dungeon = generate_dungeon(n_rooms)
+    dungeon = neverending_dungeon.generation.generate_dungeon(n_rooms)
 
     for room_a in dungeon:
         for connection_a in room_a.connections:
@@ -130,7 +132,7 @@ def test_bidirectional_connections(n_rooms):
 
 @given(integers(min_value=1), random_module())
 def test_connection_side_matching(n_rooms):
-    dungeon = generate_dungeon(n_rooms)
+    dungeon = neverending_dungeon.generation.generate_dungeon(n_rooms)
 
     for room_a in dungeon:
         for connection_a in room_a.connections:

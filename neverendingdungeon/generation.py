@@ -1,3 +1,5 @@
+from classes import *
+
 from typing import Dict, Tuple, List, NewType
 import random
 
