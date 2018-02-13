@@ -101,6 +101,24 @@ def test_unchanged_room_defaults():
     assert room.flavour != '', 'Empty flavour attribute'
     assert room.tags != [], 'Empty tags attribute'
 
+@given(integers(min_value=1, max_value=4), random_module())
+def test_connections_on_wall(n_connections):
+    empty_room = neverendingdungeon.classes.Room(id=1)
+    for i in range(n_connections):
+        empty_room.connections.append((RoomID(2+i), "", (0,0)))
+
+    room = neverendingdungeon.generation.populate_room(empty_room)
+
+    for connection in room_a.connections:
+        # TODO: generalize to nonrectangular rooms
+        x_coord = [l[0]] for l in room.shape]
+        y_coord = [l[1]] for l in room.shape]
+
+        h = connection[3][0] in [min(x_coord), max(x_coord)]
+        v = connection[3][1] in [min(y_coord), max(y_coord)]
+
+        assert (h or v), 'Connection is not on wall'
+
 # Dungeon level tests ####
 @given(integers(min_value=1), random_module())
 def test_unique_roomID(n_rooms):
@@ -118,23 +136,6 @@ def test_uniqueness_connections(n_rooms):
             connections_id = [c[1] for c in room.connections]
             assert  len(set(connections_id)) == len(connections_id), \
                 f'Duplicate connection from room {room.id}'
-
-#TODO: refactor so can be moved to room level tests
-@given(integers(min_value=1), random_module())
-def test_connections_on_wall(n_rooms):
-    dungeon = neverendingdungeon.generation.generate_dungeon(n_rooms)
-
-    for room in dungeon:
-        for connection in room_a.connections:
-
-            # TODO: generalize to nonrectangular rooms
-            x_coord = [l[0]] for l in room.shape]
-            y_coord = [l[1]] for l in room.shape]
-
-            h = connection[3][0] in [min(x_coord), max(x_coord)]
-            v = connection[3][1] in [min(y_coord), max(y_coord)]
-
-            assert (h or v), 'Connection in room {room.id} is not on wall'
 
 @given(integers(min_value=1), random_module())
 def test_bidirectional_connections(n_rooms):
