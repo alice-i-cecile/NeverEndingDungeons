@@ -1,42 +1,73 @@
-from context import neverendingdungeon
+from context import neverendingdungeon as ned
 
 from hypothesis import given, example
-from hypothesis.strategies import integers, sampled_from, random_module
+from hypothesis.strategies import integers, sampled_from, random_module, lists, tuples
 import random
 
 # Element-level tests ####
-@given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
-def test_element_field_validity(element_type):
-    element = neverendingdungeon.generation.generate_element(element_type)
+valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
+valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
+valid_abilities = ['Strength', 'Constitution',
+                   'Dexterity', 'Intelligence',
+                   'Wisdom', 'Charisma']
+valid_skills = ['None',
+                'Athletics',
+                'Acrobatics', 'Sleight of Hand', 'Stealth',
+                'Arcana', 'History', 'Investigation', 'Nature', 'Religion',
+                'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
+                'Deception', 'Intimidation', 'Performance', 'Persuasion']
 
-    valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
+@given(sampled_from(['Element', 'Interactable', 'NPC', 'SkillCheck']),
+       sampled_from(valid_sizes),
+       sampled_from(valid_dispositions),
+       sampled_from(valid_abilities),
+       sampled_from(valid_skills))
+def test_element_field_validity(element_type,
+                                size,
+                                disposition,
+                                ability,
+                                skill):
+    element = ned.generation.generate_element(element_type=element_type,
+                                size=size,
+                                disposition=disposition,
+                                ability=ability,
+                                skill=skill)
+
     assert element.size in valid_sizes, \
         f{'Invalid size {element.size}'}
 
-    if type(element) == Interactable:
+    if element_type == 'Interactable':
         pass
-    else if type(element) == NPC:
-        valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
+    else if element_type == 'NPC':
         assert (element.disposition in valid_dispositions), \
             f'Invalid disposition {element.disposition}'
-    else if type(element) == SkillCheck:
-        valid_abilities = ['Strength', 'Constitution',
-                           'Dexterity', 'Intelligence',
-                           'Wisdom', 'Charisma']
+    else if element_type == 'SkillCheck':
+
         assert all((i for i in element.ability) in valid_abilities), \
             f'Invalid ability {element.ability}'
-        valid_skills = ['None',
-                        'Athletics',
-                        'Acrobatics', 'Sleight of Hand', 'Stealth',
-                        'Arcana', 'History', 'Investigation', 'Nature', 'Religion',
-                        'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
-                        'Deception', 'Intimidation', 'Performance', 'Persuasion']
-        assert all((i for i in element.skill) in valid_skills),
+
+        assert all((i for i in element.skill) in valid_skills), \
             f'Invalid ability {element.skill}'
 
-@given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'), random_module())
-def test_unchanged_element_defaults(element_type):
-    element = neverendingdungeon.generation.generate_element(element_type)
+#TODO: add support for subclass attributes
+@given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'),
+       integers(0, len(element_descriptions)-1),
+       integers(0, len(element_gm_notes)-1),
+       tuples(integers(0,1),integers(0,1)),
+       sampled_from(valid_sizes),
+       lists(integers(0, len(universal_tags)-1)))
+def test_unchanged_element_defaults(element_type,
+                                    description_id,
+                                    gm_notes_id,
+                                    location,
+                                    size,
+                                    tags_id):
+    element = ned.generation.generate_element(element_type,
+        description_id = description_id,
+        gm_notes_id = gm_notes_id,
+        location = location,
+        size = size,
+        tags_id = tags_id)
 
     assert element.description != '', 'Empty description attribute'
     assert element.gm_notes != '', 'Empty gm_notes attribute'
@@ -44,23 +75,23 @@ def test_unchanged_element_defaults(element_type):
     assert element.size != Size(''), 'Empty size attribute'
     assert element.tags != [], 'Empty tags attribute'
 
-    if type(element) == Interactable:
+    if element_type == 'Interactable':
         assert element.interaction_result != '', 'Empty interaction_result attribute'
-    else if type(element) == NPC:
+    else if element_type == 'NPC':
         assert element.race != '', 'Empty race attribute'
         assert element.disposition != '', 'Empty disposition attribute'
         # Empty inventory is valid
-    else if type(element) == SkillCheck:
+    else if element_type == 'SkillCheck':
         assert element.ability != [], 'Empty ability attribute'
         assert element.skill != [], 'Empty skill attribute'
         assert element.success != '', 'Empty success attribute'
         assert element.failure != '', 'Empty failure attribute'
 
 # Room level tests ####
-@given(random_module())
-def test_elements_in_room():
-    empty_room = neverendingdungeon.classes.Room(id=1)
-    room = neverendingdungeon.generation.populate_room(empty_room)
+@given(integers(1, 10), random_module())
+def test_elements_in_room(n_elements):
+    empty_room = ned.classes.Room(id=1)
+    room = ned.generation.populate_room(empty_room, n_elements=n_elements)
 
     # TODO: implement for nonrectangular rooms
     def is_in_room(location, polygon):
@@ -76,10 +107,12 @@ def test_elements_in_room():
         assert is_in_room(e.location, room.shape), \
             f'element {e} at {e.location} is not in room'
 
-@given(random_module())
-def test_room_field_validity():
-    empty_room = neverendingdungeon.classes.Room(id=1)
-    room = neverendingdungeon.generation.populate_room(empty_room)
+@given(sampled_from(['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']),
+       sampled_from(['Unsafe', 'Risky', 'Sheltered', 'Safe']))
+def test_room_field_validity(challenge, safety):
+    empty_room = ned.classes.Room(id=1)
+    room = ned.generation.populate_room(empty_room,
+        challenge=challenge, safety=safety)
 
     valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
     assert room.challenge in valid_challenges, \
@@ -89,10 +122,26 @@ def test_room_field_validity():
     assert room.safety in valid_safetys, \
         f'Invalid safety {room.safty}'
 
-@given(random_module())
-def test_unchanged_room_defaults():
-    empty_room = neverendingdungeon.classes.Room(id=1)
-    room = neverendingdungeon.generation.populate_room(empty_room)
+@given(integers(1,10),
+       lists(tuples(integers(0,10), integers(0,10)), min_size = 2, max_size = 10),
+       integers(0, len(room_connection_types)-1),
+       sampled_from(['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']),
+       sampled_from(['Unsafe', 'Risky', 'Sheltered', 'Safe']))
+       integers(0, len(room_flavour)-1))
+def test_unchanged_room_defaults(n_elements,
+                                 shape,
+                                 connection_type_id,
+                                 challenge,
+                                 safety,
+                                 flavour_id):
+    empty_room = ned.classes.Room(id=1,
+                                 n_elements = n_elements,
+                                 shape = shape,
+                                 connection_type_id = connection_type_id,
+                                 challenge = challenge,
+                                 safety = safety,
+                                 flavour_id = flavour_id)
+    room = ned.generation.populate_room(empty_room)
 
     assert room.shape != [], 'Empty shape attribute'
     # Connections are tested at the dungeon level
@@ -102,13 +151,13 @@ def test_unchanged_room_defaults():
     assert room.flavour != '', 'Empty flavour attribute'
     assert room.tags != [], 'Empty tags attribute'
 
-@given(integers(min_value=1, max_value=4), random_module())
+@given(integers(min_value=1, max_value=4))
 def test_connections_on_wall(n_connections):
-    empty_room = neverendingdungeon.classes.Room(id=1)
+    empty_room = ned.classes.Room(id=1)
     for i in range(n_connections):
-        empty_room.connections.append((RoomID(2+i), "", (0,0)))
+        empty_room.connections.append((RoomID(2+i), '', (0,0)))
 
-    room = neverendingdungeon.generation.populate_room(empty_room)
+    room = ned.generation.populate_room(empty_room)
 
     for connection in room_a.connections:
         # TODO: generalize to nonrectangular rooms
@@ -121,16 +170,16 @@ def test_connections_on_wall(n_connections):
         assert (h or v), 'Connection is not on wall'
 
 # Dungeon level tests ####
-@given(integers(min_value=1), random_module())
+@given(integers(min_value=1))
 def test_unique_roomID(n_rooms):
-    dungeon = neverendingdungeon.generation.generate_dungeon(n_rooms)
+    dungeon = ned.generation.generate_dungeon(n_rooms)
 
     roomIDs = [r.id for r in dungeon]
     assert len(set(roomIds)) == len(roomIDs), 'RoomIDs are not unique'
 
-@given(integers(min_value=1), random_module())
+@given(integers(min_value=1))
 def test_uniqueness_connections(n_rooms):
-    dungeon = neverendingdungeon.generation.generate_dungeon(n_rooms)
+    dungeon = ned.generation.generate_dungeon(n_rooms)
 
     for room in dungeon:
         for connection in room.connections:
@@ -138,9 +187,9 @@ def test_uniqueness_connections(n_rooms):
             assert  len(set(connections_id)) == len(connections_id), \
                 f'Duplicate connection from room {room.id}'
 
-@given(integers(min_value=1), random_module())
+@given(integers(min_value=1))
 def test_bidirectional_connections(n_rooms):
-    dungeon = neverendingdungeon.generation.generate_dungeon(n_rooms)
+    dungeon = ned.generation.generate_dungeon(n_rooms)
 
     for room_a in dungeon:
         for connection_a in room_a.connections:
@@ -150,9 +199,9 @@ def test_bidirectional_connections(n_rooms):
                 f'Connection between {room_a.id} \
                 and {room_b.id} is not biderectional'
 
-@given(integers(min_value=1), random_module())
+@given(integers(min_value=1))
 def test_connection_side_matching(n_rooms):
-    dungeon = neverendingdungeon.generation.generate_dungeon(n_rooms)
+    dungeon = ned.generation.generate_dungeon(n_rooms)
 
     for room_a in dungeon:
         for connection_a in room_a.connections:
