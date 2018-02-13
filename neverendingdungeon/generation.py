@@ -43,7 +43,7 @@ def populate_room(room: Room) -> Room:
         else:
             room.connections[i][3] = (random.uniform(0,1), 1)
 
-    room.elements = [generate_elements() for i in range(random.randrange(1,5)]
+    room.elements = [generate_elements() for _ in range(random.randrange(1,5)]
 
     room.challenge = Challenge('Trivial')
     room.safety = Safety('Safe')
