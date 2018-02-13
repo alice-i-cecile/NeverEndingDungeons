@@ -70,6 +70,7 @@ def generate_element(element_type=None: str,
 
 def populate_room(room: Room,
                   xp_budget=0: int,
+                  gold_budget=0: int,
                   n_elements=None: int,
                   shape=None: List[Position],
                   connection_type=None: str,
@@ -83,6 +84,10 @@ def populate_room(room: Room,
 
     Args:
         room: The Room to work on.
+        xp_budget: The budget of experience to allocate between the
+            elements in the room.
+        gold_budget: The budget for gold value to allocate between the items in
+            the room.
 
     Returns:
         A Room with completed attributes.
@@ -119,7 +124,7 @@ def populate_room(room: Room,
                                 'Easy': 'Sheltered',
                                 'Medium': 'Risky',
                                 'Hard': 'Unsafe',
-                                'Deadly': 'Unsafe'}    
+                                'Deadly': 'Unsafe'}
     if safety is None:
         safety = challenge_safety_mapping[challenge]
     room.safety = safety
@@ -176,8 +181,14 @@ def generate_dungeon(n_rooms: int, party_level=1: int, party_size=4: int,
     """
 
     base_xp_budget = xp_scaling[str(party_level)]
+    # TODO: implement more sophisticated approach
+    # http://redkatart.com/dnd5tools/
+    # http://donjon.bin.sh/5e/random/#type=treasure
+    total_gold_budget = 500*party_level
+    gold_budget_per_room = round(total_gold_budget / n_rooms)
 
     dungeon = generate_dungeon_structure(n_rooms, layout, **kwargs)
-    populated_dungeon = map(populate_room, dungeon, xp_budget=base_xp_budget)
+    populated_dungeon = map(populate_room, dungeon,
+        xp_budget=base_xp_budget, gold_budget=gold_budget_per_room)
 
     return populated_dungeon
