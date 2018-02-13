@@ -60,7 +60,7 @@ class NPC(Element):
                 tags = []: Tags,
                 race = '': str,
                 disposition = Disposition(''): Disposition
-                inventory = []: List(str)):
+                inventory = []: List[str]):
         super().__init__(self, description, gm_notes, location, size, tags)
         self.race = race
         self.disposition = disposition
@@ -73,9 +73,9 @@ class SkillCheck(Element):
                 location = Position((-1,-1)): Position,
                 size = Size(''): Size,
                 tags = []: Tags,
-                ability = []: List[Ability],
-                skill = []: List[Skill],
-                difficulty = []: List[int],
+                ability = '': Ability,
+                skill = '': Skill,
+                difficulty = '': int,
                 success = '': str,
                 failure = '': str):
 
