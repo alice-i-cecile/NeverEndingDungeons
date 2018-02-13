@@ -10,7 +10,8 @@ def test_element_field_validity(element_type):
     element = neverendingdungeon.generation.generate_element(element_type)
 
     valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
-    assert element.size in valid_sizes
+    assert element.size in valid_sizes, \
+        f{'Invalid size {element.size}'}
 
     if type(element) == Interactable:
         pass
@@ -22,7 +23,7 @@ def test_element_field_validity(element_type):
         valid_abilities = ['Strength', 'Constitution',
                            'Dexterity', 'Intelligence',
                            'Wisdom', 'Charisma']
-        assert all((i for i in element.ability) in valid_abilities),\
+        assert all((i for i in element.ability) in valid_abilities), \
             f'Invalid ability {element.ability}'
         valid_skills = ['None',
                         'Athletics',
