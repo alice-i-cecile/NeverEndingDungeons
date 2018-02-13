@@ -24,7 +24,32 @@ def generate_element(element_type=None: str,
         An Element object with completed attributes.
     """
 
-    element <- Element()
+    if element_type is None:
+        element_type <- random.sample('Element',
+                                      'Interactable',
+                                      'NPC',
+                                      'SkillCheck')
+
+    if element_type == 'Element':
+        element <- Element()
+    else if element_type == 'Interactable':
+        element <- Interactable()
+        element.interaction_result = 'Nothing'
+    else if element_type == 'NPC':
+        element <- NPC()
+        element.race = 'Human'
+        element.disposition = 'Indifferent'
+        element.inventory = ['sword']
+    else if element_type == 'SkillCheck':
+        element <- SkillCheck()
+        element.ability = ['Strength']
+        element.skill = ['Acrobatics']
+        element.difficulty = [10]
+        element.success = 'You win'
+        element.failure = 'You lose'
+    else:
+        raise ValueError('Invalid element type')
+
     element.description = 'A boring piece of furniture.'
     element.gm_notes = 'There\'s very little your players can do with this.'
     element.location = (0,0)

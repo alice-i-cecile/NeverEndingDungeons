@@ -4,19 +4,12 @@ from hypothesis import given, example
 from hypothesis.strategies import integers, sampled_from, random_module, lists, tuples
 import random
 
-# Element-level tests ####
-valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
-valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
-valid_abilities = ['Strength', 'Constitution',
-                   'Dexterity', 'Intelligence',
-                   'Wisdom', 'Charisma']
-valid_skills = ['None',
-                'Athletics',
-                'Acrobatics', 'Sleight of Hand', 'Stealth',
-                'Arcana', 'History', 'Investigation', 'Nature', 'Religion',
-                'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
-                'Deception', 'Intimidation', 'Performance', 'Persuasion']
+# TODO: change from id lookups to directly setting attributes
+# use sampled_from strategy instead
 
+# TODO: fix importing names from content.py
+
+# Element-level tests ####
 @given(sampled_from(['Element', 'Interactable', 'NPC', 'SkillCheck']),
        sampled_from(valid_sizes),
        sampled_from(valid_dispositions),
@@ -49,25 +42,46 @@ def test_element_field_validity(element_type,
         assert all((i for i in element.skill) in valid_skills), \
             f'Invalid ability {element.skill}'
 
-#TODO: add support for subclass attributes
+# TODO: add difficulty attribute for skill check
 @given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'),
        integers(0, len(element_descriptions)-1),
        integers(0, len(element_gm_notes)-1),
        tuples(integers(0,1),integers(0,1)),
        sampled_from(valid_sizes),
-       lists(integers(0, len(universal_tags)-1)))
+       lists(integers(0, len(universal_tags)-1))
+       integers(0, len(interaction_results)-1),
+       integers(0, len(npc_races)-1),
+       sampled_from(valid_dispositions),
+       sampled_from(valid_abilities),
+       sampled_from(valid_skills),
+       integers(0, len(check_successes)-1),
+       integers(0, len(check_failures)-1))
 def test_unchanged_element_defaults(element_type,
                                     description_id,
                                     gm_notes_id,
                                     location,
                                     size,
-                                    tags_id):
+                                    tags_id,
+                                    interaction_result_id,
+                                    race_id,
+                                    disposition,
+                                    ability,
+                                    skill,
+                                    success_id,
+                                    failure_id):
     element = ned.generation.generate_element(element_type,
         description_id = description_id,
         gm_notes_id = gm_notes_id,
         location = location,
         size = size,
-        tags_id = tags_id)
+        tags_id = tags_id,
+        interaction_result_id = interaction_result_id,
+        race_id = race_id,
+        disposition = disposition,
+        ability = ability,
+        skill = skill,
+        success_id = success_id,
+        failure_id = failure_id)
 
     assert element.description != '', 'Empty description attribute'
     assert element.gm_notes != '', 'Empty gm_notes attribute'
@@ -107,18 +121,16 @@ def test_elements_in_room(n_elements):
         assert is_in_room(e.location, room.shape), \
             f'element {e} at {e.location} is not in room'
 
-@given(sampled_from(['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']),
-       sampled_from(['Unsafe', 'Risky', 'Sheltered', 'Safe']))
+@given(sampled_from(valid_challenges),
+       sampled_from(valid_safetys)
 def test_room_field_validity(challenge, safety):
     empty_room = ned.classes.Room(id=1)
     room = ned.generation.populate_room(empty_room,
         challenge=challenge, safety=safety)
 
-    valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
     assert room.challenge in valid_challenges, \
         f'Invalid challenge {room.challenge}'
 
-    valid_safetys = ['Unsafe', 'Risky', 'Sheltered', 'Safe']
     assert room.safety in valid_safetys, \
         f'Invalid safety {room.safty}'
 
