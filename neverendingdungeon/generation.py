@@ -69,6 +69,7 @@ def generate_element(element_type=None: str,
     return element
 
 def populate_room(room: Room,
+                  xp_budget=0: int,
                   n_elements=None: int,
                   shape=None: List[Position],
                   connection_type=None: str,
@@ -77,7 +78,8 @@ def populate_room(room: Room,
                   safety=None: Safety,
                   flavour=None: str,
                   tags=[]: Tags) -> Room:
-    """Adds content to a room.
+    """Adds content to a room. Decides theme, experience budget, and loot budget,
+        then adds suitable elements.
 
     Args:
         room: The Room to work on.
@@ -85,6 +87,7 @@ def populate_room(room: Room,
     Returns:
         A Room with completed attributes.
     """
+
     if shape is None:
         shape = [(0,0), (4,0), (4,4), (0,4)]
     room.shape = shape
@@ -108,16 +111,17 @@ def populate_room(room: Room,
             else:
                 room.connections[i][3] = (connection_location, 1)
 
-    if n_elements is None:
-        n_elements = random.randrange(1,5)
-
-    room.elements = [generate_element() for _ in range(n_elements)]
-
     if challenge is None:
         challenge = random.choice(valid_challenges)
     room.challenge = challenge
+
+    challenge_safety_mapping = {'Trivial': 'Safe',
+                                'Easy': 'Sheltered',
+                                'Medium': 'Risky',
+                                'Hard': 'Unsafe',
+                                'Deadly': 'Unsafe'}    
     if safety is None:
-        challenge = random.choice(valid_safetys)
+        safety = challenge_safety_mapping[challenge]
     room.safety = safety
 
     if flavour is None:
@@ -127,6 +131,11 @@ def populate_room(room: Room,
     if tags is []:
         tags = random.choice(universal_tags)
     room.tags.append(tags)
+
+    if n_elements is None:
+        n_elements = random.randrange(1,5)
+
+    room.elements = [generate_element() for _ in range(n_elements)]
 
     return room
 
@@ -152,8 +161,9 @@ def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) 
 
     return rooms
 
-def generate_dungeon(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
-    """Creates a dungeon from scratch.
+def generate_dungeon(n_rooms: int, party_level=1: int, party_size=4: int,
+    layout='linear': string, **kwargs) -> Dungeon:
+    """Creates a dungeon from scratch. Scales to level and size of party.
 
     Args:
         n_rooms: The number of rooms to be created.
@@ -165,7 +175,9 @@ def generate_dungeon(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon
         A Dungeon composed of Rooms with completed attributes.
     """
 
+    base_xp_budget = xp_scaling[str(party_level)]
+
     dungeon = generate_dungeon_structure(n_rooms, layout, **kwargs)
-    populated_dungeon = map(populate_room, dungeon)
+    populated_dungeon = map(populate_room, dungeon, xp_budget=base_xp_budget)
 
     return populated_dungeon
