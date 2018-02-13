@@ -61,9 +61,15 @@ def test_elements_in_room():
     empty_room = neverendingdungeon.classes.Room(id=1)
     room = neverendingdungeon.generation.populate_room(empty_room)
 
-    # TODO: implement polygon checking
+    # TODO: implement for nonrectangular rooms
     def is_in_room(location, polygon):
-        return True
+        x_coord = [l[0]] for l in r.shape]
+        y_coord = [l[1]] for l in r.shape]
+
+        valid_x = location[0] > min(x_coord) & location[1] < max(x_coord)
+        valid_y = location[0] > min(y_coord) & location[1] < max(y_coord)
+
+        return valid_x & valid_y
 
     for e in room.elements:
         assert is_in_room(e.location, room.shape), \
@@ -122,11 +128,11 @@ def test_connections_on_wall(n_rooms):
         for connection in room_a.connections:
 
             # TODO: generalize to nonrectangular rooms
-            x_coordinates = [l[0]] for l in room.shape]
-            y_coordinates = [l[1]] for l in room.shape]
+            x_coord = [l[0]] for l in room.shape]
+            y_coord = [l[1]] for l in room.shape]
 
-            h = connection[3][0] in [min(x_coordinates), max(x_coordinates)]
-            v = connection[3][1] in [min(y_coordinates), max(y_coordinates)]
+            h = connection[3][0] in [min(x_coord), max(x_coord)]
+            v = connection[3][1] in [min(y_coord), max(y_coord)]
 
             assert (h or v), 'Connection in room {room.id} is not on wall'
 
@@ -153,14 +159,14 @@ def test_connection_side_matching(n_rooms):
 
             # TODO: generalize to nonrectangular rooms
             def get_facing(c, r):
-                x_coordinates = [l[0]] for l in r.shape]
-                y_coordinates = [l[1]] for l in r.shape]
+                x_coord = [l[0]] for l in r.shape]
+                y_coord = [l[1]] for l in r.shape]
 
-                if c[3][0] == min(x_coordinates):
+                if c[3][0] == min(x_coord):
                     return 'left'
-                else if c[3][0] == max(x_coordinates):
+                else if c[3][0] == max(x_coord):
                     return 'right'
-                else if c[3][1] == min(y_coordinates):
+                else if c[3][1] == min(y_coord):
                     return 'bottom'
                 else:
                     return 'top'
