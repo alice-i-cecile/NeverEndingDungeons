@@ -8,17 +8,17 @@ Dungeon = List[Room]
 
 # TODO: add support for subclasses
 def generate_element(element_type=None: str,
-                     description_id=None: int,
-                     gm_notes_id=None: int,
+                     description=None: str,
+                     gm_notes=None: str,
                      location=None: Location,
-                     size=None: int,
-                     tags_id=[]: int,
+                     size=None: Size,
+                     tags=[]: Tags,
                      **kwargs) -> Element:
     """Creates a random element to place in a room.
 
     Args:
         room: The Room to work on.
-        description_id:
+        description:
 
     Returns:
         An Element object with completed attributes.
@@ -61,11 +61,11 @@ def generate_element(element_type=None: str,
 def populate_room(room: Room,
                   n_elements=None: int,
                   shape=None: List[Position],
-                  connection_type_id=None: int,
+                  connection_type=None: str,
                   connection_location=None: int,
                   challenge=None: Challenge,
                   safety=None: Safety,
-                  flavour_id=None: str,
+                  flavour=None: str,
                   tags=[]: Tags) -> Room:
     """Adds content to a room.
 

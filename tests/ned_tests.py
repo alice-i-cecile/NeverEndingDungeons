@@ -4,17 +4,12 @@ from hypothesis import given, example
 from hypothesis.strategies import integers, sampled_from, random_module, lists, tuples
 import random
 
-# TODO: change from id lookups to directly setting attributes
-# use sampled_from strategy instead
-
-# TODO: fix importing names from content.py
-
 # Element-level tests ####
 @given(sampled_from(['Element', 'Interactable', 'NPC', 'SkillCheck']),
-       sampled_from(valid_sizes),
-       sampled_from(valid_dispositions),
-       sampled_from(valid_abilities),
-       sampled_from(valid_skills))
+       sampled_from(ned.content.valid_sizes),
+       sampled_from(ned.content.valid_dispositions),
+       sampled_from(ned.content.valid_abilities),
+       sampled_from(ned.content.valid_skills))
 def test_element_field_validity(element_type,
                                 size,
                                 disposition,
@@ -26,62 +21,62 @@ def test_element_field_validity(element_type,
                                 ability=ability,
                                 skill=skill)
 
-    assert element.size in valid_sizes, \
+    assert element.size in ned.content.valid_sizes, \
         f{'Invalid size {element.size}'}
 
     if element_type == 'Interactable':
         pass
     else if element_type == 'NPC':
-        assert (element.disposition in valid_dispositions), \
+        assert (element.disposition in ned.content.valid_dispositions), \
             f'Invalid disposition {element.disposition}'
     else if element_type == 'SkillCheck':
 
-        assert all((i for i in element.ability) in valid_abilities), \
+        assert all((i for i in element.ability) in ned.content.valid_abilities), \
             f'Invalid ability {element.ability}'
 
-        assert all((i for i in element.skill) in valid_skills), \
+        assert all((i for i in element.skill) in ned.content.valid_skills), \
             f'Invalid ability {element.skill}'
 
 # TODO: add difficulty attribute for skill check
 @given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'),
-       integers(0, len(element_descriptions)-1),
-       integers(0, len(element_gm_notes)-1),
+       sampled_from(ned.content.element_descriptions),
+       sampled_from(ned.content.element_gm_notes),
        tuples(integers(0,1),integers(0,1)),
-       sampled_from(valid_sizes),
-       lists(integers(0, len(universal_tags)-1))
-       integers(0, len(interaction_results)-1),
-       integers(0, len(npc_races)-1),
-       sampled_from(valid_dispositions),
-       sampled_from(valid_abilities),
-       sampled_from(valid_skills),
-       integers(0, len(check_successes)-1),
-       integers(0, len(check_failures)-1))
+       sampled_from(ned.content.valid_sizes),
+       lists(sampled_from(ned.content.universal_tags)
+       sampled_from(ned.content.interaction_results),
+       sampled_from(ned.content.npc_races),
+       sampled_from(ned.content.valid_dispositions),
+       sampled_from(ned.content.valid_abilities),
+       sampled_from(ned.content.valid_skills),
+       sampled_from(ned.content.check_successes),
+       sampled_from(ned.content.check_failures))
 def test_unchanged_element_defaults(element_type,
-                                    description_id,
-                                    gm_notes_id,
+                                    description,
+                                    gm_notes,
                                     location,
                                     size,
-                                    tags_id,
-                                    interaction_result_id,
-                                    race_id,
+                                    tags,
+                                    interaction_result,
+                                    race,
                                     disposition,
                                     ability,
                                     skill,
-                                    success_id,
-                                    failure_id):
+                                    success,
+                                    failure):
     element = ned.generation.generate_element(element_type,
-        description_id = description_id,
-        gm_notes_id = gm_notes_id,
+        description = description,
+        gm_notes = gm_notes,
         location = location,
         size = size,
-        tags_id = tags_id,
-        interaction_result_id = interaction_result_id,
-        race_id = race_id,
+        tags = tags,
+        interaction_result = interaction_result,
+        race = race,
         disposition = disposition,
         ability = ability,
         skill = skill,
-        success_id = success_id,
-        failure_id = failure_id)
+        success = success,
+        failure = failure)
 
     assert element.description != '', 'Empty description attribute'
     assert element.gm_notes != '', 'Empty gm_notes attribute'
@@ -121,38 +116,38 @@ def test_elements_in_room(n_elements):
         assert is_in_room(e.location, room.shape), \
             f'element {e} at {e.location} is not in room'
 
-@given(sampled_from(valid_challenges),
-       sampled_from(valid_safetys)
+@given(sampled_from(ned.content.valid_challenges),
+       sampled_from(ned.content.valid_safetys)
 def test_room_field_validity(challenge, safety):
     empty_room = ned.classes.Room(id=1)
     room = ned.generation.populate_room(empty_room,
         challenge=challenge, safety=safety)
 
-    assert room.challenge in valid_challenges, \
+    assert room.challenge in ned.content.valid_challenges, \
         f'Invalid challenge {room.challenge}'
 
-    assert room.safety in valid_safetys, \
+    assert room.safety in ned.content.valid_safetys, \
         f'Invalid safety {room.safty}'
 
 @given(integers(1,10),
        lists(tuples(integers(0,10), integers(0,10)), min_size = 2, max_size = 10),
-       integers(0, len(room_connection_types)-1),
+       sampled_from(ned.content.room_connection_types),
        sampled_from(['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']),
        sampled_from(['Unsafe', 'Risky', 'Sheltered', 'Safe']))
-       integers(0, len(room_flavour)-1))
+       sampled_from(ned.content.room_flavour)
 def test_unchanged_room_defaults(n_elements,
                                  shape,
-                                 connection_type_id,
+                                 connection_type,
                                  challenge,
                                  safety,
-                                 flavour_id):
+                                 flavour):
     empty_room = ned.classes.Room(id=1,
                                  n_elements = n_elements,
                                  shape = shape,
-                                 connection_type_id = connection_type_id,
+                                 connection_type = connection_type,
                                  challenge = challenge,
                                  safety = safety,
-                                 flavour_id = flavour_id)
+                                 flavour = flavour)
     room = ned.generation.populate_room(empty_room)
 
     assert room.shape != [], 'Empty shape attribute'
