@@ -24,37 +24,47 @@ def generate_element(element_type=None: str,
         An Element object with completed attributes.
     """
 
+
     if element_type is None:
-        element_type <- random.sample('Element',
-                                      'Interactable',
-                                      'NPC',
-                                      'SkillCheck')
+        element_type <- random.choice(valid_element_types)
 
-    if element_type == 'Element':
-        element <- Element()
-    else if element_type == 'Interactable':
-        element <- Interactable()
-        element.interaction_result = 'Nothing'
-    else if element_type == 'NPC':
-        element <- NPC()
-        element.race = 'Human'
-        element.disposition = 'Indifferent'
-        element.inventory = ['sword']
-    else if element_type == 'SkillCheck':
-        element <- SkillCheck()
-        element.ability = ['Strength']
-        element.skill = ['Acrobatics']
-        element.difficulty = [10]
-        element.success = 'You win'
-        element.failure = 'You lose'
-    else:
-        raise ValueError('Invalid element type')
+    element = {
+        'Element': Element()
+        'Interactable': Interactable()
+        'NPC': NPC()
+        'SkillCheck': SkillCheck()
+    }[element_type]()
 
-    element.description = 'A boring piece of furniture.'
-    element.gm_notes = 'There\'s very little your players can do with this.'
-    element.location = (0,0)
-    element.size = 'Medium'
-    element.tags = ['boring']
+    if description is None:
+        element.description = random.choice(element_descriptions)
+    element.description = description
+
+    if gm_notes is None:
+        element.gm_notes = random.choice(element_gm_notess)
+    element.gm_notes = gm_notes
+
+    # TODO: generate within room bounds
+    if location is None:
+        element.location = (random.choice([0,1]), random.choice([0,1]))
+    element.location = location
+
+    if size is None:
+        element.size = random.choice(element_sizes)
+    element.size = size
+
+    if tags is None:
+        element.tags = random.choice(universal_tags)
+    element.tags = tags
+
+    # TODO: add support for using sane lookup system
+    if element_type == 'Interactable':
+        element = populate_interactable(element)
+
+    if element_type == 'NPC':
+        element = populate_npc(element)
+
+    if element_type == 'SkillCheck':
+        element = populate_skillcheck(element)
 
     return element
 
@@ -81,7 +91,7 @@ def populate_room(room: Room,
 
     for i in range(room.connections):
         if connection_type is None:
-            room.connections[i][2] = random.sample(room_connection_types)
+            room.connections[i][2] = random.choice(room_connection_types)
         else:
             room.connections[i][2] = connection_type
 
@@ -104,18 +114,18 @@ def populate_room(room: Room,
     room.elements = [generate_element() for _ in range(n_elements)]
 
     if challenge is None:
-        challenge = random.sample(valid_challenges)
+        challenge = random.choice(valid_challenges)
     room.challenge = challenge
     if safety is None:
-        challenge = random.sample(valid_safetys)
+        challenge = random.choice(valid_safetys)
     room.safety = safety
 
     if flavour is None:
-        room.flavour = random.sample(room_flavours)
+        room.flavour = random.choice(room_flavours)
     room.flavour = flavour
 
     if tags is []:
-        tags = random.sample(universal_tags)
+        tags = random.choice(universal_tags)
     room.tags.append(tags)
 
     return room

@@ -3,6 +3,7 @@ universal_tags = ['boring', 'creepy']
 
 
 # Element data ####
+valid_element_types = ['Element', 'Interactable', 'NPC', 'SkillCheck']
 valid_sizes = map(Size, ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'])
 valid_dispositions = map(Disposition, ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful'])
 valid_abilities = map(Ability, ['Strength', 'Constitution',
