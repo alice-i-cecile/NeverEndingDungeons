@@ -1,3 +1,5 @@
+# TODO: apply types to the relevant objects using map
+
 # Universal data ####
 universal_tags = ['boring', 'creepy']
 
