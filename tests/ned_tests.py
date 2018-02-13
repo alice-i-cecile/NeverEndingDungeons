@@ -37,7 +37,6 @@ def test_element_field_validity(element_type,
         assert all((i for i in element.skill) in ned.content.valid_skills), \
             f'Invalid ability {element.skill}'
 
-# TODO: add difficulty attribute for skill check
 @given(sampled_from('Element', 'Interactable', 'NPC', 'SkillCheck'),
        sampled_from(ned.content.element_descriptions),
        sampled_from(ned.content.element_gm_notes),
@@ -47,8 +46,9 @@ def test_element_field_validity(element_type,
        sampled_from(ned.content.interaction_results),
        sampled_from(ned.content.npc_races),
        sampled_from(ned.content.valid_dispositions),
-       sampled_from(ned.content.valid_abilities),
-       sampled_from(ned.content.valid_skills),
+       lists(sampled_from(ned.content.valid_abilities)),
+       lists(sampled_from(ned.content.valid_skills)),
+       lists(integers(0,40)),
        sampled_from(ned.content.check_successes),
        sampled_from(ned.content.check_failures))
 def test_unchanged_element_defaults(element_type,
@@ -62,6 +62,7 @@ def test_unchanged_element_defaults(element_type,
                                     disposition,
                                     ability,
                                     skill,
+                                    difficulty,
                                     success,
                                     failure):
     element = ned.generation.generate_element(element_type,
@@ -75,6 +76,7 @@ def test_unchanged_element_defaults(element_type,
         disposition = disposition,
         ability = ability,
         skill = skill,
+        difficulty = difficulty,
         success = success,
         failure = failure)
 
