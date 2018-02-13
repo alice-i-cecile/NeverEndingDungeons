@@ -1,21 +1,19 @@
-# TODO: apply types to the relevant objects using map
-
 # Universal data ####
 universal_tags = ['boring', 'creepy']
 
 
 # Element data ####
-valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
-valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
-valid_abilities = ['Strength', 'Constitution',
+valid_sizes = map(Size, ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'])
+valid_dispositions = map(Disposition, ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful'])
+valid_abilities = map(Ability, ['Strength', 'Constitution',
                    'Dexterity', 'Intelligence',
-                   'Wisdom', 'Charisma']
-valid_skills = ['None',
+                   'Wisdom', 'Charisma'])
+valid_skills = map(Skill, ['None',
                 'Athletics',
                 'Acrobatics', 'Sleight of Hand', 'Stealth',
                 'Arcana', 'History', 'Investigation', 'Nature', 'Religion',
                 'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
-                'Deception', 'Intimidation', 'Performance', 'Persuasion']
+                'Deception', 'Intimidation', 'Performance', 'Persuasion'])
 
 element_descriptions = ['A chair', 'A table']
 element_gm_notes = ['You can sit on it', 'You can sit at it']
@@ -28,8 +26,8 @@ check_successes = ['Stunning sucess']
 check_failures = ['Remarkable failure']
 
 # Room data ####
-valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
-valid_safetys = ['Unsafe', 'Risky', 'Sheltered', 'Safe']
+valid_challenges = map(Challenge, ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly'])
+valid_safetys = map(Safety, ['Unsafe', 'Risky', 'Sheltered', 'Safe'])
 
 room_connection_types = ['heavy door', 'gate']
 room_flavours = ['A bright clean room.', 'A damp dungeon.']
