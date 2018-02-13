@@ -5,29 +5,21 @@ import random
 
 Dungeon = List[Room]
 
-#TODO: add a generate_element(element_type) function
-
-def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
-    """Creates a barren, connected dungeon.
-
-    Args:
-        n_rooms: The number of rooms to be created.
-        layout: The algorithm used to link rooms into a graph. Defaults to 'linear'.
-            Supported options are: 'linear'.
-        **kwargs: Additional named parameters to be passed to the layout algorithm.
+def generate_element() -> Element:
+    """Creates a random element to place in a room.
 
     Returns:
-        A barren dungeon with rooms that only have an ID and connections.
+        An Element object with completed attributes.
     """
 
-    rooms = [Room(id=i) for i in range(n_rooms)]
+    element <- Element()
+    element.description = 'A boring piece of furniture.'
+    element.gm_notes = 'There\'s very little your players can do with this.'
+    element.location = (0,0)
+    element.size = 'Medium'
+    element.tags = ['boring']
 
-    if layout == 'linear':
-        for i in range(n_rooms - 1):
-            rooms[i].connections.append((RoomID(i+1), "", (0,0)))
-            rooms[i+1].connections.append((RoomID(i), "", (0,0)))
-
-    return rooms
+    return element
 
 def populate_room(room: Room) -> Room:
     """Adds content to a room.
@@ -51,9 +43,7 @@ def populate_room(room: Room) -> Room:
         else:
             room.connections[i][3] = (random.uniform(0,1), 1)
 
-    for i in range(random.randrange(1,5)):
-        new_element = Element(description = str(i))
-        room.elements.append(new_element)
+    room.elements = [generate_elements() for i in range(random.randrange(1,5)]
 
     room.challenge = Challenge('Trivial')
     room.safety = Safety('Safe')
@@ -63,6 +53,28 @@ def populate_room(room: Room) -> Room:
     room.tags.append('boring')
 
     return room
+
+def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
+    """Creates a barren, connected dungeon.
+
+    Args:
+        n_rooms: The number of rooms to be created.
+        layout: The algorithm used to link rooms into a graph. Defaults to 'linear'.
+            Supported options are: 'linear'.
+        **kwargs: Additional named parameters to be passed to the layout algorithm.
+
+    Returns:
+        A barren dungeon with rooms that only have an ID and connections.
+    """
+
+    rooms = [Room(id=i) for i in range(n_rooms)]
+
+    if layout == 'linear':
+        for i in range(n_rooms - 1):
+            rooms[i].connections.append((RoomID(i+1), "", (0,0)))
+            rooms[i+1].connections.append((RoomID(i), "", (0,0)))
+
+    return rooms
 
 def generate_dungeon(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
     """Creates a dungeon from scratch.
