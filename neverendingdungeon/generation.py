@@ -75,11 +75,15 @@ def populate_room(room: Room,
     Returns:
         A Room with completed attributes.
     """
-
-    room.shape = [(0,0), (4,0), (4,4), (0,4)]
+    if shape is None:
+        shape = [(0,0), (4,0), (4,4), (0,4)]
+    room.shape = shape
 
     for i in range(room.connections):
-        room.connections[i][2] = 'BasicConnection'
+        if connection_type is None:
+            room.connections[i][2] = random.sample(room_connection_types)
+        else:
+            room.connections[i][2] = connection_type
 
         # Rooms are connected left to right
         # Ensure that the layout is geometrically possible
@@ -99,12 +103,20 @@ def populate_room(room: Room,
 
     room.elements = [generate_element() for _ in range(n_elements)]
 
-    room.challenge = Challenge('Trivial')
-    room.safety = Safety('Safe')
+    if challenge is None:
+        challenge = random.sample(valid_challenges)
+    room.challenge = challenge
+    if safety is None:
+        challenge = random.sample(valid_safetys)
+    room.safety = safety
 
-    room.flavour = 'A very boring room.'
+    if flavour is None:
+        room.flavour = random.sample(room_flavours)
+    room.flavour = flavour
 
-    room.tags.append('boring')
+    if tags is []:
+        tags = random.sample(universal_tags)
+    room.tags.append(tags)
 
     return room
 
