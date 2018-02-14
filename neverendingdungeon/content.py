@@ -6,23 +6,23 @@ universal_tags = ['boring', 'creepy']
 
 # Element data ####
 valid_element_types = ['Element', 'Interactable', 'NPC', 'SkillCheck']
-valid_sizes = map(Size, ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan'])
-valid_dispositions = map(Disposition, ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful'])
-valid_abilities = map(Ability, ['Strength', 'Constitution',
+valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
+valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
+valid_abilities = ['Strength', 'Constitution',
                    'Dexterity', 'Intelligence',
-                   'Wisdom', 'Charisma'])
-valid_skills = map(Skill, ['None',
+                   'Wisdom', 'Charisma']
+valid_skills = ['None',
                 'Athletics',
                 'Acrobatics', 'Sleight of Hand', 'Stealth',
                 'Arcana', 'History', 'Investigation', 'Nature', 'Religion',
                 'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
-                'Deception', 'Intimidation', 'Performance', 'Persuasion'])
+                'Deception', 'Intimidation', 'Performance', 'Persuasion']
 
 element_df = pd.read_csv('../content/elements.csv')
 
 # Room data ####
-valid_challenges = map(Challenge, ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly'])
-valid_safetys = map(Safety, ['Unsafe', 'Risky', 'Sheltered', 'Safe'])
+valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
+valid_safetys = ['Unsafe', 'Risky', 'Sheltered', 'Safe']
 
 room_connection_types = ['heavy door', 'gate']
 element_df = pd.read_csv('../content/rooms.csv')

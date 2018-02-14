@@ -4,25 +4,11 @@ from typing import Dict, Tuple, List, NewType
 
 # Cartesian grid, with origin in bottom-left corner
 Position = Tuple[int, int]
-# oneof ("Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan")
-Size =  NewType("Size", str)
 Tags = List[str]
-
-# oneof (“Hostile”, “Unfriendly”, “Indifferent”, “Friendly”, “Helpful”)
-Disposition = NewType("Disposition", str)
-# oneof ("Strength", "Dexterity", "Constitution",
-# "Intelligence", "Wisdom", "Charisma")
-Ability = NewType("Ability", str)
-# one of the 5e proficiencys or "None"
-proficiency = NewType("proficiency", str)
 
 RoomID = NewType('RoomID', int)
 ConnectionType = NewType('ConnectionType', str)
 Connection = Tuple[RoomID, ConnectionType, Position]
-# oneof  (“Trivial”, “Easy”, “Medium”, “Difficult”, “Deadly”)
-Challenge = NewType('Challenge', str)
-# oneof (“Unsafe”, “Risky”, “Sheltered”, “Safe”)
-Safety = NewType('Safety', str)
 
 # TODO: add method to generate from data.frame row
 # TODO: add docstrings
@@ -32,8 +18,8 @@ class Element:
                 description: str = '',
                 gm_notes: str = '',
                 cr: int = 0,
-                location: Position  = Position((-1,-1)),
-                size: Size = Size(''),
+                location: Position  = (-1, -1),
+                size: str = '',
                 tags: Tags = []):
         self.description = description
         self.gm_notes = gm_notes
@@ -48,8 +34,8 @@ class Interactable(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: int = 0,
-                location: Position  = Position((-1,-1)),
-                size: Size = Size(''),
+                location: Position  = (-1, -1),
+                size: str = '',
                 tags: Tags = [],
                 interaction_result: str = ''):
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
@@ -64,12 +50,12 @@ class NPC(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: int = 0,
-                location: Position  = Position((-1,-1)),
-                size: Size = Size(''),
+                location: Position  = (-1, -1),
+                size: str = '',
                 tags: Tags = [],
                 race: str = '',
-                disposition: Disposition = Disposition(''),
-                inventory: List[str]) = []:
+                disposition: str = '',
+                inventory: List[str] = []):
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
         self.race = race
         self.disposition = disposition
@@ -81,11 +67,11 @@ class AbilityCheck(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: int = 0,
-                location: Position  = Position((-1,-1)),
-                size: Size = Size(''),
+                location: Position  = (-1, -1),
+                size: str = '',
                 tags: Tags = [],
-                ability: Ability = '',
-                proficiency: proficiency = '',
+                ability: str = '',
+                proficiency: str = '',
                 difficulty: int = '',
                 success: str = '',
                 failure: str = ''):
@@ -104,8 +90,8 @@ class Room:
                 shape: List[Position] = [],
                 connections: List[Connection] = [],
                 elements: List[Element] = [],
-                challenge: Challenge = Challenge(''),
-                safety: Safety = Safety(''),
+                challenge: str = '',
+                safety: str = '',
                 flavour: str = '',
                 tags: Tags = []):
         # RoomID corresponds to the room position in the Dungeon list
