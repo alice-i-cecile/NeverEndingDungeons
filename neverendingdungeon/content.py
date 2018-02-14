@@ -25,7 +25,7 @@ valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
 valid_safetys = ['Unsafe', 'Risky', 'Sheltered', 'Safe']
 
 room_connection_types = ['heavy door', 'gate']
-element_df = pd.read_csv('../content/rooms.csv')
+room_df = pd.read_csv('../content/rooms.csv')
 
 # Dungeon data ####
 xp_scaling =   {'1': 50,
