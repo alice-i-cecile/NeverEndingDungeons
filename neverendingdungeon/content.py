@@ -1,4 +1,5 @@
 import pandas as pd
+from classes import *
 
 # Universal data ####
 universal_tags = ['boring', 'creepy']
@@ -17,14 +18,14 @@ valid_skills = map(Skill, ['None',
                 'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
                 'Deception', 'Intimidation', 'Performance', 'Persuasion'])
 
-element_df = pd.read_csv(../content/elements.csv)
+element_df = pd.read_csv('../content/elements.csv')
 
 # Room data ####
 valid_challenges = map(Challenge, ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly'])
 valid_safetys = map(Safety, ['Unsafe', 'Risky', 'Sheltered', 'Safe'])
 
 room_connection_types = ['heavy door', 'gate']
-element_df = pd.read_csv(../content/rooms.csv)
+element_df = pd.read_csv('../content/rooms.csv')
 
 # Dungeon data ####
 xp_scaling =   {'1': 50,

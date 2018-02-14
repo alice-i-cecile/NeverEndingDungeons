@@ -7,12 +7,12 @@ import random
 Dungeon = List[Room]
 
 # TODO: add support for subclasses
-def generate_element(element_type=None: str,
-                     description=None: str,
-                     gm_notes=None: str,
-                     location=None: Location,
-                     size=None: Size,
-                     tags=[]: Tags,
+def generate_element(element_type: str = None,
+                     description: str = None,
+                     gm_notes: str = None,
+                     location: Location = None,
+                     size: Size = None,
+                     tags: Tags = [],
                      **kwargs) -> Element:
     """Creates a random element to place in a room.
 
@@ -69,16 +69,16 @@ def generate_element(element_type=None: str,
     return element
 
 def populate_room(room: Room,
-                  xp_budget=0: int,
-                  gold_budget=0: int,
-                  n_elements=None: int,
-                  shape=None: List[Position],
-                  connection_type=None: str,
-                  connection_location=None: int,
-                  challenge=None: Challenge,
-                  safety=None: Safety,
-                  flavour=None: str,
-                  tags=[]: Tags) -> Room:
+                  xp_budget: int = 0,
+                  gold_budget: int = 0,
+                  n_elements: int = None,
+                  shape: List[Position] = None,
+                  connection_type: str = None,
+                  connection_location: int = None,
+                  challenge: Challenge = None,
+                  safety: Safety = None,
+                  flavour: str = None,
+                  tags: Tags = []) -> Room:
     """Adds content to a room. Decides theme, experience budget, and loot budget,
         then adds suitable elements.
 
@@ -144,7 +144,9 @@ def populate_room(room: Room,
 
     return room
 
-def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) -> Dungeon:
+def generate_dungeon_structure(n_rooms: int,
+                                layout: string = 'linear',
+                                **kwargs) -> Dungeon:
     """Creates a barren, connected dungeon.
 
     Args:
@@ -166,7 +168,8 @@ def generate_dungeon_structure(n_rooms: int, layout='linear': string, **kwargs) 
 
     return rooms
 
-def generate_dungeon(n_rooms: int, party_level=1: int, party_size=4: int,
+def generate_dungeon(n_rooms: int,
+    party_level: int = 1, party_size: int = 4,
     layout='linear': string, **kwargs) -> Dungeon:
     """Creates a dungeon from scratch. Scales to level and size of party.
 

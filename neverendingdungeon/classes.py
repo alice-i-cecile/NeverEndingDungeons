@@ -1,4 +1,4 @@
-AbilityCheckfrom typing import Dict, Tuple, List, NewType
+from typing import Dict, Tuple, List, NewType
 # FIXME: "To annotate arguments it is preferred to use abstract
 # collection types such as Mapping, Sequence, or AbstractSet."
 
@@ -28,13 +28,13 @@ Safety = NewType('Safety', str)
 # TODO: add docstrings
 class Element:
     def __init__(self,
-                name = '':str,
-                description = '': str,
-                gm_notes = '': str,
-                cr = 0: int,
-                location = Position((-1,-1)): Position,
-                size = Size(''): Size,
-                tags = []: Tags):
+                name: str = '',
+                description: str = '',
+                gm_notes: str = '',
+                cr: int = 0,
+                location: Position  = Position((-1,-1)),
+                size: Size = Size(''),
+                tags: Tags = []):
         self.description = description
         self.gm_notes = gm_notes
         self.cr = cr
@@ -44,14 +44,14 @@ class Element:
 
 class Interactable(Element):
     def __init__(self,
-                name = '':str,
-                description = '': str,
-                gm_notes = '': str,
-                cr = 0: int,
-                location = Position((-1,-1)): Position,
-                size = Size(''): Size,
-                tags = []: Tags,
-                interaction_result = '': str):
+                name: str = '',
+                description: str = '',
+                gm_notes: str = '',
+                cr: int = 0,
+                location: Position  = Position((-1,-1)),
+                size: Size = Size(''),
+                tags: Tags = [],
+                interaction_result: str = ''):
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
         self.interaction_result = interaction_result
 
@@ -60,16 +60,16 @@ class Interactable(Element):
 # rather than on an individual level
 class NPC(Element):
     def __init__(self,
-                name = '':str,
-                description = '': str,
-                gm_notes = '': str,
-                cr = 0: int,
-                location = Position((-1,-1)): Position,
-                size = Size(''): Size,
-                tags = []: Tags,
-                race = '': str,
-                disposition = Disposition(''): Disposition
-                inventory = []: List[str]):
+                name: str = '',
+                description: str = '',
+                gm_notes: str = '',
+                cr: int = 0,
+                location: Position  = Position((-1,-1)),
+                size: Size = Size(''),
+                tags: Tags = [],
+                race: str = '',
+                disposition: Disposition = Disposition(''),
+                inventory: List[str]) = []:
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
         self.race = race
         self.disposition = disposition
@@ -77,18 +77,18 @@ class NPC(Element):
 
 class AbilityCheck(Element):
     def __init__(self,
-                name = '':str,
-                description = '': str,
-                gm_notes = '': str,
-                cr = 0: int,
-                location = Position((-1,-1)): Position,
-                size = Size(''): Size,
-                tags = []: Tags,
-                ability = '': Ability,
-                proficiency = '': proficiency,
-                difficulty = '': int,
-                success = '': str,
-                failure = '': str):
+                name: str = '',
+                description: str = '',
+                gm_notes: str = '',
+                cr: int = 0,
+                location: Position  = Position((-1,-1)),
+                size: Size = Size(''),
+                tags: Tags = [],
+                ability: Ability = '',
+                proficiency: proficiency = '',
+                difficulty: int = '',
+                success: str = '',
+                failure: str = ''):
 
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
 
@@ -101,13 +101,13 @@ class AbilityCheck(Element):
 
 class Room:
     def __init__(self, id: RoomID,
-                shape = []: List[Position],
-                connections = []: List[Connection],
-                elements = []: List[Element],
-                challenge = Challenge(''): Challenge,
-                safety = Safety(''): Safety,
-                flavour = '': str,
-                tags = []: Tags):
+                shape: List[Position] = [],
+                connections: List[Connection] = [],
+                elements: List[Element] = [],
+                challenge: Challenge = Challenge(''),
+                safety: Safety = Safety(''),
+                flavour: str = '',
+                tags: Tags = []):
         # RoomID corresponds to the room position in the Dungeon list
         self.id = id
         self.shape = shape
