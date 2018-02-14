@@ -32,7 +32,7 @@ def generate_element(element_type=None: str,
         'Element': Element()
         'Interactable': Interactable()
         'NPC': NPC()
-        'SkillCheck': SkillCheck()
+        'AbilityCheck': AbilityCheck()
     }[element_type]()
 
     if description is None:
@@ -63,8 +63,8 @@ def generate_element(element_type=None: str,
     if element_type == 'NPC':
         element = populate_npc(element)
 
-    if element_type == 'SkillCheck':
-        element = populate_skillcheck(element)
+    if element_type == 'AbilityCheck':
+        element = populate_AbilityCheck(element)
 
     return element
 

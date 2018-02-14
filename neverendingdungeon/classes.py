@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, List, NewType
+AbilityCheckfrom typing import Dict, Tuple, List, NewType
 # FIXME: "To annotate arguments it is preferred to use abstract
 # collection types such as Mapping, Sequence, or AbstractSet."
 
@@ -13,8 +13,8 @@ Disposition = NewType("Disposition", str)
 # oneof ("Strength", "Dexterity", "Constitution",
 # "Intelligence", "Wisdom", "Charisma")
 Ability = NewType("Ability", str)
-# one of the 5e skills or "None"
-Skill = NewType("Skill", str)
+# one of the 5e proficiencys or "None"
+proficiency = NewType("proficiency", str)
 
 RoomID = NewType('RoomID', int)
 ConnectionType = NewType('ConnectionType', str)
@@ -75,7 +75,7 @@ class NPC(Element):
         self.disposition = disposition
         self.inventory = inventory
 
-class SkillCheck(Element):
+class AbilityCheck(Element):
     def __init__(self,
                 name = '':str,
                 description = '': str,
@@ -85,7 +85,7 @@ class SkillCheck(Element):
                 size = Size(''): Size,
                 tags = []: Tags,
                 ability = '': Ability,
-                skill = '': Skill,
+                proficiency = '': proficiency,
                 difficulty = '': int,
                 success = '': str,
                 failure = '': str):
@@ -93,7 +93,7 @@ class SkillCheck(Element):
         super().__init__(self, name, description, gm_notes, cr, location, size, tags)
 
         self.ability = ability
-        self.skill = skill
+        self.proficiency = proficiency
         self.difficulty = difficulty
         self.success = success
         self.failure = failure
