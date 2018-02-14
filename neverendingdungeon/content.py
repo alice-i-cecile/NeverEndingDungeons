@@ -1,3 +1,5 @@
+import pandas as pd
+
 # Universal data ####
 universal_tags = ['boring', 'creepy']
 
@@ -15,22 +17,14 @@ valid_skills = map(Skill, ['None',
                 'Animal Handling', 'Insight', 'Medicine', 'Perception', 'Survival',
                 'Deception', 'Intimidation', 'Performance', 'Persuasion'])
 
-element_descriptions = ['A chair', 'A table']
-element_gm_notes = ['You can sit on it', 'You can sit at it']
-
-interaction_results = ['Nothing happened.', 'It blew up!']
-
-npc_races = ['Orc', 'Troll']
-
-check_successes = ['Stunning sucess']
-check_failures = ['Remarkable failure']
+element_df = pd.read_csv(../content/elements.csv)
 
 # Room data ####
 valid_challenges = map(Challenge, ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly'])
 valid_safetys = map(Safety, ['Unsafe', 'Risky', 'Sheltered', 'Safe'])
 
 room_connection_types = ['heavy door', 'gate']
-room_flavours = ['A bright clean room.', 'A damp dungeon.']
+element_df = pd.read_csv(../content/rooms.csv)
 
 # Dungeon data ####
 xp_scaling =   {'1': 50,
