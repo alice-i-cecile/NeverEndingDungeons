@@ -1,0 +1,6 @@
+flavour,tags,room_size,room_safety
+"The room is dimly lit with flickering torches and as you approach you hear a steady drip. A bowl, almost 15 feet across and perfectly smooth, is hewn out from the solid rock. Blood seems to ooze from the stone of the bowl itself, collecting into a shallow pool before dripping down somewhere below.","cult, large","large, huge",unsafe
+"Mushrooms sprout from the walls of this natural cavern, some glowing faintly. They form a wonderous rainbow of colour, coating every surface except the curiously bare floor. The room is completely silent and even your footsteps are muffled.",ooze,"medium, large, huge, gargantuan","risky, unsafe"
+"This appears to be a supply closet, filled with food, goods and tools.","neutral, mundane","tiny, small","safe, sheltered"
+"A circle is inscribed in the center of this room, surrounded by white candles that are still burning despite no signs of the person who lit them. You feel a sense of calm wash over you as soon as you step into the circle.","demonic, safe","medium, large","safe, sheltered"
+"As you pass through the secret passageway you emerge into a small room. The walls are lined with small irregular recesses, each filled with a carefully arranged item.","secret, treasure, neutral","small, medium","safe, sheltered"
