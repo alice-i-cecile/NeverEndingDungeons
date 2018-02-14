@@ -10,7 +10,6 @@ Dungeon = List[Room]
 def populate_room(room: Room,
                   xp_budget: int = 0,
                   gold_budget: int = 0,
-                  shape: List[Position] = None,
                   challenge: str = None,
                   tags: Tags = []) -> Room:
     """Adds content to a room. The challenge of the room determines its safety
@@ -30,10 +29,6 @@ def populate_room(room: Room,
     Returns:
         A Room with completed attributes.
     """
-
-    if shape is None:
-        shape = [(0,0), (4,0), (4,4), (0,4)]
-    room.shape = shape
 
     for i in range(room.connections):
         if connection_type is None:
@@ -89,7 +84,7 @@ def populate_room(room: Room,
 
     return room
 
-# TODO: set connection locations at this level
+# TODO: assign absolute room coordinates
 def generate_dungeon_structure(n_rooms: int,
                                 layout: string = 'linear',
                                 **kwargs) -> Dungeon:
@@ -105,12 +100,14 @@ def generate_dungeon_structure(n_rooms: int,
         A barren dungeon with rooms that only have an ID and connections.
     """
 
-    rooms = [Room(id=i) for i in range(n_rooms)]
+    universal_shape = [(0,0), (4,0), (4,4), (0,4)]
+
+    rooms = [Room(id=i, shape=universal_shape) for i in range(n_rooms)]
 
     if layout == 'linear':
         for i in range(n_rooms - 1):
-            rooms[i].connections.append((RoomID(i+1), '', (0,0)))
-            rooms[i+1].connections.append((RoomID(i), '', (0,0)))
+            rooms[i].connections.append((RoomID(i+1), '', (0,2)))
+            rooms[i+1].connections.append((RoomID(i), '', (4,2)))
 
     return rooms
 
@@ -138,7 +135,9 @@ def generate_dungeon(n_rooms: int,
     gold_budget_per_room = round(total_gold_budget / n_rooms)
 
     dungeon = generate_dungeon_structure(n_rooms, layout, **kwargs)
-    populated_dungeon = map(populate_room, dungeon,
-        xp_budget=base_xp_budget, gold_budget=gold_budget_per_room)
+    populated_dungeon = [populate_room(r,
+        xp_budget=base_xp_budget,
+        gold_budget=gold_budget_per_room) 
+        for r in dungeon]
 
     return populated_dungeon

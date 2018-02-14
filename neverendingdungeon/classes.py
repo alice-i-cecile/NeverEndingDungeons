@@ -84,7 +84,7 @@ class AbilityCheck(Element):
         self.success = success
         self.failure = failure
 
-
+# TODO: add absolute position attribute
 class Room:
     def __init__(self, id: RoomID,
                 shape: List[Position] = [],
