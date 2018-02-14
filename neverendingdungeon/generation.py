@@ -105,14 +105,13 @@ def generate_dungeon_structure(n_rooms: int,
 
     if layout == 'linear':
         for i in range(n_rooms - 1):
-            rooms[i].connections.append((RoomID(i+1), '', (0,2)))
-            rooms[i+1].connections.append((RoomID(i), '', (4,2)))
+            rooms[i].connections.append(i+1, '', (0,2)))
+            rooms[i+1].connections.append(i, '', (4,2)))
 
             rooms[i].coord = (4*i, 0)
 
     return rooms
 
-#TODO: set connection types at this level
 def generate_dungeon(n_rooms: int,
     party_level: int = 1, party_size: int = 4,
     layout='linear': string, **kwargs) -> Dungeon:
@@ -136,6 +135,18 @@ def generate_dungeon(n_rooms: int,
     gold_budget_per_room = round(total_gold_budget / n_rooms)
 
     dungeon = generate_dungeon_structure(n_rooms, layout, **kwargs)
+
+    # Generates connection types
+    # If not yet set, checks opposite side of connection and matches
+    # If that is also not yet set, generates randomly
+    for r in dungeon:
+        for c in r.connections:
+            if c[2] == '':
+                matching_connection = d[c[1]][2]
+                if matching_connection == '':
+                    connection_type = random.choice(room_connection_types)
+                    c[2], d[c[1]][2] = connection_type
+
     populated_dungeon = [populate_room(r,
         xp_budget=base_xp_budget,
         gold_budget=gold_budget_per_room)

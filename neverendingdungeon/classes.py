@@ -6,9 +6,8 @@ from typing import Dict, Tuple, List, NewType
 Position = Tuple[int, int]
 Tags = List[str]
 
-RoomID = NewType('RoomID', int)
-ConnectionType = NewType('ConnectionType', str)
-Connection = Tuple[RoomID, ConnectionType, Position]
+# RoomID, ConnectionType, ConnectionLocation
+Connection = Tuple[int, str, Position]
 
 # TODO: add method to generate from data.frame row
 # TODO: add docstrings
