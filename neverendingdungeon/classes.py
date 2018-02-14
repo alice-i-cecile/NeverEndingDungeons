@@ -24,28 +24,35 @@ Challenge = NewType('Challenge', str)
 # oneof (“Unsafe”, “Risky”, “Sheltered”, “Safe”)
 Safety = NewType('Safety', str)
 
+# TODO: add method to generate from data.frame row
+# TODO: add docstrings
 class Element:
     def __init__(self,
+                name = '':str,
                 description = '': str,
                 gm_notes = '': str,
+                cr = 0: int,
                 location = Position((-1,-1)): Position,
                 size = Size(''): Size,
                 tags = []: Tags):
         self.description = description
         self.gm_notes = gm_notes
+        self.cr = cr
         self.location = location
         self.size = size
         self.tags = tags
 
 class Interactable(Element):
     def __init__(self,
+                name = '':str,
                 description = '': str,
                 gm_notes = '': str,
+                cr = 0: int,
                 location = Position((-1,-1)): Position,
                 size = Size(''): Size,
                 tags = []: Tags,
                 interaction_result = '': str):
-        super().__init__(self, description, gm_notes, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
         self.interaction_result = interaction_result
 
 
@@ -53,23 +60,27 @@ class Interactable(Element):
 # rather than on an individual level
 class NPC(Element):
     def __init__(self,
+                name = '':str,
                 description = '': str,
                 gm_notes = '': str,
+                cr = 0: int,
                 location = Position((-1,-1)): Position,
                 size = Size(''): Size,
                 tags = []: Tags,
                 race = '': str,
                 disposition = Disposition(''): Disposition
                 inventory = []: List[str]):
-        super().__init__(self, description, gm_notes, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
         self.race = race
         self.disposition = disposition
         self.inventory = inventory
 
 class SkillCheck(Element):
     def __init__(self,
+                name = '':str,
                 description = '': str,
                 gm_notes = '': str,
+                cr = 0: int,
                 location = Position((-1,-1)): Position,
                 size = Size(''): Size,
                 tags = []: Tags,
@@ -79,7 +90,7 @@ class SkillCheck(Element):
                 success = '': str,
                 failure = '': str):
 
-        super().__init__(self, description, gm_notes, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
 
         self.ability = ability
         self.skill = skill
