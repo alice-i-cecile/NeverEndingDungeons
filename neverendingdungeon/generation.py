@@ -1,5 +1,6 @@
 from classes import *
 from content import *
+import utilities
 
 from typing import Dict, Tuple, List, NewType
 import random
@@ -142,50 +143,8 @@ def populate_room(room: Room,
         selected_element = random.choice(elements_df.shape[0])
         e_series = element_df.iloc[selected_element, ]
 
-        # TODO: is there a way to automatically apply matching names?
-        # TODO: move into seperate import_element function in utilities.py
-        if e_series.element_type == 'Base':
-            new_element = Element(name = e_series.name,
-                                  description = e_series.description,
-                                  gm_notes = e_series.gm_notes,
-                                  cr = e_series.cr,
-                                  size = e_series.size,
-                                  tags = e_series.tags)
-        else if e_series.element_type == 'Interactable':
-            new_element = Element(name = e_series.name,
-                                  description = e_series.description,
-                                  gm_notes = e_series.gm_notes,
-                                  cr = e_series.cr,
-                                  size = e_series.size,
-                                  tags = e_series.tags,
-                                  interaction_result = e_series.interaction_result)
-        #TODO: add conversion of inventory to list
-        else if e_series.element_type == 'NPC':
-            new_element = Element(name = e_series.name,
-                                  description = e_series.description,
-                                  gm_notes = e_series.gm_notes,
-                                  cr = e_series.cr,
-                                  size = e_series.size,
-                                  tags = e_series.tags,
-                                  race = e_series.race,
-                                  disposition = e_series.disposition,
-                                  inventory = e_series.inventory
-                                  )
-        else if e_series.element_type == 'SkillCheck':
-            new_element = Element(name = e_series.name,
-                                  description = e_series.description,
-                                  gm_notes = e_series.gm_notes,
-                                  cr = e_series.cr,
-                                  size = e_series.size,
-                                  tags = e_series.tags,
-                                  ability = e_series.ability,
-                                  proficiency = e_series.proficency,
-                                  difficulty = e_series.difficulty,
-                                  success = e_series.success,
-                                  failure = e_series.failure)
-        else:
-            raise ValueError(f"Invalid element_type {e_series.element_type}")
-
+        new_element = utilities.import_element(e_series)
+        
         # TODO: generate within room bounds
         element.location = (random.choice([0,1]), random.choice([0,1]))
         room.elements.append(new_element)
