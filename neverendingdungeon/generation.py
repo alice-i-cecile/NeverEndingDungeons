@@ -84,7 +84,6 @@ def populate_room(room: Room,
 
     return room
 
-# TODO: assign absolute room coordinates
 def generate_dungeon_structure(n_rooms: int,
                                 layout: string = 'linear',
                                 **kwargs) -> Dungeon:
@@ -108,6 +107,8 @@ def generate_dungeon_structure(n_rooms: int,
         for i in range(n_rooms - 1):
             rooms[i].connections.append((RoomID(i+1), '', (0,2)))
             rooms[i+1].connections.append((RoomID(i), '', (4,2)))
+
+            rooms[i].coord = (4*i, 0)
 
     return rooms
 
@@ -137,7 +138,7 @@ def generate_dungeon(n_rooms: int,
     dungeon = generate_dungeon_structure(n_rooms, layout, **kwargs)
     populated_dungeon = [populate_room(r,
         xp_budget=base_xp_budget,
-        gold_budget=gold_budget_per_room) 
+        gold_budget=gold_budget_per_room)
         for r in dungeon]
 
     return populated_dungeon
