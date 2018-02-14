@@ -7,68 +7,6 @@ import random
 
 Dungeon = List[Room]
 
-# TODO: change to select_elements
-def generate_element(element_type: str = None,
-                     description: str = None,
-                     gm_notes: str = None,
-                     location: Location = None,
-                     size: str = None,
-                     tags: Tags = [],
-                     **kwargs) -> Element:
-    """Creates a random element to place in a room.
-
-    Args:
-        room: The Room to work on.
-        description:
-
-    Returns:
-        An Element object with completed attributes.
-    """
-
-
-    if element_type is None:
-        element_type <- random.choice(valid_element_types)
-
-    element = {
-        'Element': Element()
-        'Interactable': Interactable()
-        'NPC': NPC()
-        'AbilityCheck': AbilityCheck()
-    }[element_type]()
-
-    if description is None:
-        element.description = random.choice(element_descriptions)
-    element.description = description
-
-    if gm_notes is None:
-        element.gm_notes = random.choice(element_gm_notess)
-    element.gm_notes = gm_notes
-
-    # TODO: generate within room bounds
-    if location is None:
-        element.location = (random.choice([0,1]), random.choice([0,1]))
-    element.location = location
-
-    if size is None:
-        element.size = random.choice(element_sizes)
-    element.size = size
-
-    if tags is None:
-        element.tags = random.choice(universal_tags)
-    element.tags = tags
-
-    # TODO: add support for using sane lookup system
-    if element_type == 'Interactable':
-        element = populate_interactable(element)
-
-    if element_type == 'NPC':
-        element = populate_npc(element)
-
-    if element_type == 'AbilityCheck':
-        element = populate_AbilityCheck(element)
-
-    return element
-
 def populate_room(room: Room,
                   xp_budget: int = 0,
                   gold_budget: int = 0,
@@ -144,7 +82,7 @@ def populate_room(room: Room,
         e_series = element_df.iloc[selected_element, ]
 
         new_element = utilities.import_element(e_series)
-        
+
         # TODO: generate within room bounds
         element.location = (random.choice([0,1]), random.choice([0,1]))
         room.elements.append(new_element)
