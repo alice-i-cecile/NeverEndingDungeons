@@ -1,5 +1,6 @@
 # TODO: apply type hints
 # TODO: add docstrings
+# TODO: empty inventory and contents should be [], not ""
 def import_element(e_series):
     # TODO: is there a way to automatically apply matching names?
     if e_series.element_type == 'Base':
@@ -21,7 +22,6 @@ def import_element(e_series):
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               interaction_result = e_series.interaction_result)
-    #TODO: add conversion of inventory to list
     else if e_series.element_type == 'NPC':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
@@ -33,7 +33,7 @@ def import_element(e_series):
                               tags = e_series.tags.split(sep=", "),
                               race = e_series.race,
                               disposition = e_series.disposition,
-                              inventory = e_series.inventory)
+                              inventory = e_series.inventory,split(sep=", "))
     else if e_series.element_type == 'SkillCheck':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
@@ -48,6 +48,16 @@ def import_element(e_series):
                               difficulty = e_series.difficulty,
                               success = e_series.success,
                               failure = e_series.failure)
+    else if e_series.element_type == 'Treasure':
+        new_element = Element(name = e_series.name,
+                              description = e_series.description,
+                              gm_notes = e_series.gm_notes,
+                              cr = e_series.cr,
+                              xp = e_series.xp,
+                              gold = e_series.gold,
+                              size = e_series.size,
+                              tags = e_series.tags.split(sep=", "),
+                              contents = e_series.inventory,split(sep=", "))
     else:
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 

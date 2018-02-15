@@ -5,7 +5,7 @@ from classes import *
 universal_tags = ['boring', 'creepy']
 
 # Element data ####
-valid_element_types = ['Element', 'Interactable', 'NPC', 'SkillCheck']
+valid_element_types = ['Element', 'Interactable', 'NPC', 'SkillCheck', 'Treasure']
 valid_sizes = ['Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan']
 valid_dispositions = ['Hostile', 'Unfriendly', 'Indifferent', 'Friendly', 'Helpful']
 valid_abilities = ['Strength', 'Constitution',

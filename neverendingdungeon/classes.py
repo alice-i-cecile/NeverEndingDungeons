@@ -97,6 +97,23 @@ class AbilityCheck(Element):
         self.success = success
         self.failure = failure
 
+class Treasure(Element):
+    def __init__(self,
+                name: str = '',
+                description: str = '',
+                gm_notes: str = '',
+                cr: str = 0,
+                xp: int = 0,
+                gold: int =0,
+                location: Position  = (-1, -1),
+                size: str = '',
+                tags: Tags = [],
+                contents: List[str] = []):
+
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
+
+        self.contents = contents
+
 class Room:
     def __init__(self, id: int,
                 coord: Position = (0,0),
