@@ -156,19 +156,31 @@ def generate_dungeon_structure(n_rooms: int,
     rooms = [Room(id=i, shape=shape_generation()) for i in range(n_rooms)]
 
     if layout == 'linear':
-        for i in range(n_rooms - 1):
+        current_y_offset = 0
+        current_x_offset = 0
+        for i in range(n_rooms):
 
-            wall_a = max(l[1][0] for l in rooms[i].shape)
-            wall_b = 0
-            width_a = max(l[1][1] for l in rooms[i].shape) - 1
-            width_b = max(l[1][1] for l in rooms[i+1].shape) - 1
+            rooms[i].coord = (current_x_offset, current_y_offset)
 
-            rooms[i].connections.append(i+1, '',
-                (wall_a, random.randrange(0, width_a)))
-            rooms[i+1].connections.append(i, '',
-                (wall_b,random.randrange(0, width_b)))
+            length = max(l[1][0] for l in rooms[i].shape)
 
-            rooms[i].coord = (4*i, 0)
+            if (i != n_rooms):
+                wall_a = max(l[1][0] for l in rooms[i].shape)
+                wall_b = 0
+                width_a = max(l[1][1] for l in rooms[i].shape) - 1
+                width_b = max(l[1][1] for l in rooms[i+1].shape) - 1
+                connection_a_y = random.randrange(0, width_a)
+                connection_b_y = random.randrange(0, width_b)
+
+                rooms[i].connections.append(i+1, '',
+                    (wall_a, connection_a_y))
+                rooms[i+1].connections.append(i, '',
+                    (wall_b, connection_b_y))
+
+            current_x_offset += length
+            current_y_offset += connection_a_y - connection_b_y
+    else:
+        raise ValueError(f'Invalid layout {layout}')
 
     return rooms
 
