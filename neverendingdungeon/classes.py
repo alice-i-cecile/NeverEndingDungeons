@@ -9,9 +9,7 @@ Tags = List[str]
 # RoomID, ConnectionType, ConnectionLocation
 Connection = Tuple[int, str, Position]
 
-# TODO: add method to generate from data.frame row
 # TODO: add docstrings
-# TODO: add treasure subclass
 # TODO: make xp and gold derived @properties
 class Element:
     def __init__(self,

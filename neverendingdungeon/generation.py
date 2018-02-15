@@ -124,9 +124,6 @@ def populate_room(room: Room,
         tags = random.choice(universal_tags)
     room.tags.append(tags)
 
-    # TODO: change to penalized optimization approach
-    n_elements = random.randrange(1,5)
-
     room.elements = select_elements(room, xp_budget, gold_budget, tags)
 
     return room
