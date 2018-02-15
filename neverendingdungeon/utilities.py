@@ -8,7 +8,6 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
-                              xp = e_series.xp,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "))
@@ -17,7 +16,6 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
-                              xp = e_series.xp,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
@@ -27,19 +25,17 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
-                              xp = e_series.xp,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               race = e_series.race,
                               disposition = e_series.disposition,
-                              inventory = e_series.inventory,split(sep=", "))
+                              inventory = e_series.inventory.split(sep=", "))
     else if e_series.element_type == 'SkillCheck':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
-                              xp = e_series.xp,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
@@ -53,11 +49,10 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
-                              xp = e_series.xp,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
-                              contents = e_series.inventory,split(sep=", "))
+                              contents = e_series.content.split(sep=", "))
     else:
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 
