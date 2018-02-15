@@ -46,7 +46,7 @@ class Interactable(Element):
                 size: str = '',
                 tags: Tags = [],
                 interaction_result: str = ''):
-        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
+        super().__init__(name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.interaction_result = interaction_result
 
 
@@ -66,7 +66,7 @@ class NPC(Element):
                 race: str = '',
                 disposition: str = '',
                 inventory: List[str] = []):
-        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
+        super().__init__(name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.race = race
         self.disposition = disposition
         self.inventory = inventory
@@ -88,7 +88,7 @@ class AbilityCheck(Element):
                 success: str = '',
                 failure: str = ''):
 
-        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
+        super().__init__(name, description, gm_notes, cr, xp, gold, location, size, tags)
 
         self.ability = ability
         self.proficiency = proficiency
@@ -109,12 +109,13 @@ class Treasure(Element):
                 tags: Tags = [],
                 contents: List[str] = []):
 
-        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
+        super().__init__(name, description, gm_notes, cr, xp, gold, location, size, tags)
 
         self.contents = contents
 
 class Room:
-    def __init__(self, id: int,
+    def __init__(self,
+                id: int,
                 coord: Position = (0,0),
                 shape: List[Position] = [],
                 connections: List[Connection] = [],

@@ -1,4 +1,5 @@
 from typing import List
+from classes import *
 
 # TODO: apply type hints
 # TODO: add docstrings
@@ -14,7 +15,7 @@ def import_element(e_series):
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "))
     elif e_series.element_type == 'Interactable':
-        new_element = Element(name = e_series.name,
+        new_element = Interactable(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
@@ -23,7 +24,8 @@ def import_element(e_series):
                               tags = e_series.tags.split(sep=", "),
                               interaction_result = e_series.interaction_result)
     elif e_series.element_type == 'NPC':
-        new_element = Element(name = e_series.name,
+        e_series.inventory = str(e_series.inventory)
+        new_element = NPC(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
@@ -33,8 +35,8 @@ def import_element(e_series):
                               race = e_series.race,
                               disposition = e_series.disposition,
                               inventory = e_series.inventory.split(sep=", "))
-    elif e_series.element_type == 'SkillCheck':
-        new_element = Element(name = e_series.name,
+    elif e_series.element_type == 'AbilityCheck':
+        new_element = AbilityCheck(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
@@ -42,19 +44,20 @@ def import_element(e_series):
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               ability = e_series.ability,
-                              proficiency = e_series.proficency,
+                              proficiency = e_series.proficiency,
                               difficulty = e_series.difficulty,
                               success = e_series.success,
                               failure = e_series.failure)
     elif e_series.element_type == 'Treasure':
-        new_element = Element(name = e_series.name,
+        e_series.content = str(e_series.contents)
+        new_element = Treasure(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
-                              contents = e_series.content.split(sep=", "))
+                              contents = e_series.contents.split(sep=", "))
     else:
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 

@@ -9,37 +9,36 @@ Dungeon = List[Room]
 
 # TODO: generalize for nonrectangular Rooms
 def place_element(room: Room, size: str = 'Medium'):
-    x_coord = [l[0] for l in r.shape]
-    y_coord = [l[1] for l in r.shape]
+    x_coord = [l[0] for l in room.shape]
+    y_coord = [l[1] for l in room.shape]
 
     # Items are placed at the centers of squares but walls are on edges
     x_min, y_min = min(x_coord), min(y_coord)
     x_max, y_max = max(x_coord) - 1, max(y_coord) - 1
 
+    # FIXME: does not work for rooms with dimension 1
     x, y = random.randrange(x_min, x_max), random.randrange(y_min, y_max)
     return (x,y)
 
 def select_elements(room, xp_budget: int, gold_budget: int):
 
-    tags = room.tags
-    viable_tags = tags + ['neutral']
+    elements = []
 
+    viable_tags = room.tags + ['neutral']
     viable_elements = element_df[[utilities.filter_by_tags(r, viable_tags) for r in element_df.tags]]
-
 
     # TODO: switch to a nonconvex optimization approach
     current_xp = 0
-    while current_xp < xp_budget & len(room.elements) < 5:
+    while current_xp < xp_budget and len(elements) < 5:
 
-        viable_elements = viable_elements.query('xp < xp_budget - current_xp')
+        viable_elements = viable_elements.query(f'xp <= {xp_budget - current_xp}')
 
-        selected_element =  random.randrange(0,viable_rooms.shape[0])
-        e_series = element_df.iloc[selected_element, ]
-
+        e_series =  viable_elements.loc[random.choice(viable_elements.index), ]
         new_element = utilities.import_element(e_series)
 
-        new_element.location = place_element(room.shape, new_element.size)
-        room.elements.append(new_element)
+        new_element.location = place_element(room, new_element.size)
+        print(vars(new_element))
+        elements.append(new_element)
 
         current_xp += new_element.xp
 
@@ -55,9 +54,9 @@ def select_elements(room, xp_budget: int, gold_budget: int):
         # TODO: generate within room bounds
         treasure.location = place_element(room.shape, treasure.size)
         treasure.gold = gold_budget - current_gold
-        room.elements.append(treasure)
+        elements.append(treasure)
 
-    return room
+    return elements
 
 def populate_room(room: Room,
                   xp_budget: int = 0,
@@ -103,13 +102,12 @@ def populate_room(room: Room,
     viable_tags = room.tags + ['neutral']
     viable_rooms = room_df[[utilities.filter_by_tags(r, viable_tags) for r in room_df.tags]]
 
-    selected_room = random.randrange(0,viable_rooms.shape[0])
-    r_series = room_df.iloc[selected_room, ]
+    r_series = viable_rooms.loc[random.choice(viable_rooms.index), ]
 
     # TODO: follow other room rules here
     room.flavour = r_series.flavour
 
-    #room.elements = select_elements(room, xp_budget, gold_budget, tags)
+    room.elements = select_elements(room, xp_budget, gold_budget)
 
     print(vars(room))
     return room
