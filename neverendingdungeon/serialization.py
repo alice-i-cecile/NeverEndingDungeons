@@ -6,7 +6,7 @@ import svgwrite
 
 
 # TODO: add grid lines
-def generate_svg_map(dungeon: generation.Dungeon):
+def generate_svg_map(dungeon: generation.Dungeon, dungeon_name: str ="dev"):
     dmap = svgwrite.Drawing()
 
     # TODO: add connections
@@ -21,6 +21,6 @@ def generate_svg_map(dungeon: generation.Dungeon):
     for r in Dungeon:
         dmap.add(draw_room(r))
 
-    dmap.saveas("../output/dev_dungeonmap.svg")
+    dmap.saveas(f"../output/{dungeon_name}_dungeonmap.svg")
 
     return dmap
