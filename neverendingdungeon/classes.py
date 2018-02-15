@@ -1,3 +1,5 @@
+# TODO: add __print__ magic methods to Element and Room
+
 from typing import Dict, Tuple, List, NewType
 
 # FIXME: "To annotate arguments it is preferred to use abstract

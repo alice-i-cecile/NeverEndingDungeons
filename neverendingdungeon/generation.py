@@ -22,9 +22,10 @@ def place_element(room: Room, size: str = 'Medium'):
 def select_elements(room, xp_budget: int, gold_budget: int):
 
     tags = room.tags
-    viable_tags = tags.append('neutral')
+    viable_tags = tags + ['neutral']
 
-    viable_elements = element_df[utilities.filter_by_tags(element_df.tags)]
+    viable_elements = element_df[[utilities.filter_by_tags(r, viable_tags) for r in element_df.tags]]
+
 
     # TODO: switch to a nonconvex optimization approach
     current_xp = 0
@@ -32,7 +33,7 @@ def select_elements(room, xp_budget: int, gold_budget: int):
 
         viable_elements = viable_elements.query('xp < xp_budget - current_xp')
 
-        selected_element = random.choice(viable_elements.shape[0])
+        selected_element =  random.randrange(0,viable_rooms.shape[0])
         e_series = element_df.iloc[selected_element, ]
 
         new_element = utilities.import_element(e_series)
@@ -81,7 +82,7 @@ def populate_room(room: Room,
         A Room with completed attributes.
     """
 
-    for i in range(room.connections):
+    for i, c in enumerate(room.connections):
         if connection_type is None:
             room.connections[i][2] = random.choice(room_connection_types)
         else:
@@ -103,7 +104,7 @@ def populate_room(room: Room,
     if challenge is None:
         challenge = random.choice(valid_challenges)
     room.challenge = challenge
-    room.xp_budget *= challenge_multipliers[challenge]
+    xp_budget *= challenge_multipliers[challenge]
 
     challenge_safety_mapping = {'Trivial': 'Safe',
                                 'Easy': 'Sheltered',
@@ -114,20 +115,19 @@ def populate_room(room: Room,
     room.safety = challenge_safety_mapping[challenge]
 
     if tags is []:
-        tags = random.choice(universal_tags)
-    room.tags.append(tags)
+        tags = [random.choice(universal_tags)]
+    room.tags += tags
 
+    viable_tags = room.tags + ['neutral']
+    viable_rooms = room_df[[utilities.filter_by_tags(r, viable_tags) for r in room_df.tags]]
 
-    viable_tags = room.tags.append('neutral')
-    viable_rooms = room_df[utilities.filter_by_tags(room_df.tags)]
-
-    selected_room = random.choice(viable_rooms.shape[0])
-    r_series = room_df.iloc[selected_element, ]
+    selected_room = random.randrange(0,viable_rooms.shape[0])
+    r_series = room_df.iloc[selected_room, ]
 
     # TODO: follow other room rules here
     room.flavour = r_series.flavour
 
-    room.elements = select_elements(room, xp_budget, gold_budget, tags)
+    #room.elements = select_elements(room, xp_budget, gold_budget, tags)
 
     return room
 

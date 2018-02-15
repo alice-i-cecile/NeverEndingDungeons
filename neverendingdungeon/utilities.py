@@ -1,3 +1,5 @@
+from typing import List
+
 # TODO: apply type hints
 # TODO: add docstrings
 # TODO: empty inventory and contents should be [], not ""
@@ -11,7 +13,7 @@ def import_element(e_series):
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "))
-    else if e_series.element_type == 'Interactable':
+    elif e_series.element_type == 'Interactable':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -20,7 +22,7 @@ def import_element(e_series):
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               interaction_result = e_series.interaction_result)
-    else if e_series.element_type == 'NPC':
+    elif e_series.element_type == 'NPC':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -31,7 +33,7 @@ def import_element(e_series):
                               race = e_series.race,
                               disposition = e_series.disposition,
                               inventory = e_series.inventory.split(sep=", "))
-    else if e_series.element_type == 'SkillCheck':
+    elif e_series.element_type == 'SkillCheck':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -44,7 +46,7 @@ def import_element(e_series):
                               difficulty = e_series.difficulty,
                               success = e_series.success,
                               failure = e_series.failure)
-    else if e_series.element_type == 'Treasure':
+    elif e_series.element_type == 'Treasure':
         new_element = Element(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -59,6 +61,6 @@ def import_element(e_series):
     return new_element
 
 
-def filter_by_tags(tags: str):
+def filter_by_tags(tags: str, valid_tags: List[str]):
     tags = tags.split(sep=', ')
     return any(i in tags for i in valid_tags)
