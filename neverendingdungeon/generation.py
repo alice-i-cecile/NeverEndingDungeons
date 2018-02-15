@@ -7,8 +7,22 @@ import random
 
 Dungeon = List[Room]
 
-def select_elements(xp_budget: int, gold_budget: int, tags: Tags):
+# TODO: generalize for nonrectangular Rooms
+# TODO: take size into account
+def place_element(room: Room, size: str = "Medium"):
+    x_coord = [l[0]] for l in r.shape]
+    y_coord = [l[1]] for l in r.shape]
 
+    # Items are placed at the centers of squares but walls are on edges
+    x_min, y_min = min(x_coord), min(y_coord)
+    x_max, y_max = max(x_coord) - 1, max(y_coord) - 1
+
+    x, y = random.randrange(x_min, x_max), random.randrange(y_min, y_max)
+    return (x,y)
+
+def select_elements(room, xp_budget: int, gold_budget: int):
+
+    tags = room.tags
     viable_tags = tags.append('neutral')
 
     def filter_by_tags(tags):
@@ -28,8 +42,7 @@ def select_elements(xp_budget: int, gold_budget: int, tags: Tags):
 
         new_element = utilities.import_element(e_series)
 
-        # TODO: generate within room bounds
-        new_element.location = (random.choice([0,1]), random.choice([0,1]))
+        new_element.location = place_element(room.shape, new_element.size)
         room.elements.append(new_element)
 
         current_xp += new_element.xp
@@ -45,9 +58,11 @@ def select_elements(xp_budget: int, gold_budget: int, tags: Tags):
         treasure = utilities.import_element(e_series)
 
         # TODO: generate within room bounds
-        treasure.location = (random.choice([0,1]), random.choice([0,1]))
+        treasure.location = place_element(room.shape, treasure.size)
         treasure.gold = gold_budget - current_gold
         room.elements.append(treasure)
+
+    return room
 
 
 def populate_room(room: Room,
@@ -112,7 +127,7 @@ def populate_room(room: Room,
     # TODO: change to penalized optimization approach
     n_elements = random.randrange(1,5)
 
-    room.elements = select_elements(xp_budget, gold_budget, tags)
+    room.elements = select_elements(room, xp_budget, gold_budget, tags)
 
     return room
 
