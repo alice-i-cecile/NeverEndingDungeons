@@ -28,51 +28,11 @@ class Element:
         self.description = description
         self.gm_notes = gm_notes
         self.cr = cr
-        self.xp = self.calculate_xp(cr)
+        self.xp = xp
         self.gold = gold
         self.location = location
         self.size = size
         self.tags = tags
-
-    @classmethod
-    def calculate_xp(cls, cr: str):
-        xp_by_cr = {'0': 0,
-                    '1/8': 25,
-                    '1/4': 50,
-                    '1/2': 100,
-                    '1': 200,
-                    '2': 450,
-                    '3': 700,
-                    '4': 1100,
-                    '5': 1800,
-                    '6': 2300,
-                    '7': 2900,
-                    '8': 3900,
-                    '9': 5000,
-                    '10': 5900,
-                    '11': 7200,
-                    '12': 8400,
-                    '13': 10000,
-                    '14': 11500,
-                    '15': 13000,
-                    '16': 15000,
-                    '17': 18000,
-                    '18': 20000,
-                    '19': 22000,
-                    '20': 25000,
-                    '21': 33000,
-                    '22': 41000,
-                    '23': 50000,
-                    '24': 62000,
-                    '25': 75000,
-                    '26': 90000,
-                    '27': 105000,
-                    '28': 120000,
-                    '29': 135000,
-                    '30': 155000}
-
-        xp = xp_by_cr[cr]
-        return xp
 
 class Interactable(Element):
     def __init__(self,
@@ -86,7 +46,7 @@ class Interactable(Element):
                 size: str = '',
                 tags: Tags = [],
                 interaction_result: str = ''):
-        super().__init__(self, name, description, gm_notes, cr, gold, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.interaction_result = interaction_result
 
 
@@ -106,7 +66,7 @@ class NPC(Element):
                 race: str = '',
                 disposition: str = '',
                 inventory: List[str] = []):
-        super().__init__(self, name, description, gm_notes, cr, gold, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.race = race
         self.disposition = disposition
         self.inventory = inventory
@@ -128,7 +88,7 @@ class AbilityCheck(Element):
                 success: str = '',
                 failure: str = ''):
 
-        super().__init__(self, name, description, gm_notes, cr, gold, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
 
         self.ability = ability
         self.proficiency = proficiency
@@ -149,7 +109,7 @@ class Treasure(Element):
                 tags: Tags = [],
                 contents: List[str] = []):
 
-        super().__init__(self, name, description, gm_notes, cr, gold, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
 
         self.contents = contents
 

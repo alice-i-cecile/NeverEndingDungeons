@@ -1,5 +1,5 @@
 import pandas as pd
-from classes import *
+import utilities
 
 # Universal data ####
 # TODO: generate automatically from database
@@ -20,6 +20,7 @@ valid_skills = ['None',
                 'Deception', 'Intimidation', 'Performance', 'Persuasion']
 
 element_df = pd.read_csv('../content/elements.csv')
+element_df['xp'] = [utilities.calculate_xp(i) for i in element_df.cr]
 
 # Room data ####
 valid_challenges = ['Trivial', 'Easy', 'Medium', 'Hard', 'Deadly']
