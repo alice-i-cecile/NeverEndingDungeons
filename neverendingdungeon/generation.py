@@ -82,25 +82,6 @@ def populate_room(room: Room,
         A Room with completed attributes.
     """
 
-    for i, c in enumerate(room.connections):
-        if connection_type is None:
-            room.connections[i][2] = random.choice(room_connection_types)
-        else:
-            room.connections[i][2] = connection_type
-
-        # Rooms are connected left to right
-        # Ensure that the layout is geometrically possible
-        if room.connections[i][1] < room.id:
-            if connection_location is None:
-                room.connections[i][3] = (random.randrange(0,4), 0)
-            else:
-                room.connections[i][3] = (connection_location, 0)
-        else:
-            if connection_location is None:
-                room.connections[i][3] = (random.randrange(0,4), 1)
-            else:
-                room.connections[i][3] = (connection_location, 1)
-
     if challenge is None:
         challenge = random.choice(valid_challenges)
     room.challenge = challenge
