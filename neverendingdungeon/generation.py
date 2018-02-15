@@ -129,6 +129,7 @@ def populate_room(room: Room,
 
     #room.elements = select_elements(room, xp_budget, gold_budget, tags)
 
+    print(vars(room))
     return room
 
 # TODO: add more sophisticated layout algorithms
