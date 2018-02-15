@@ -2,7 +2,8 @@ import pandas as pd
 from classes import *
 
 # Universal data ####
-universal_tags = ['boring', 'creepy']
+# TODO: generate automatically from database
+universal_tags = ['cult', 'ooze', 'demonic', 'mundane', 'secret', 'treasure']
 
 # Element data ####
 valid_element_types = ['Element', 'Interactable', 'NPC', 'SkillCheck', 'Treasure']
