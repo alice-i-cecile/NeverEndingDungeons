@@ -35,7 +35,7 @@ class Element:
         self.tags = tags
 
     @classmethod
-    def calculate_xp(cls, cr):
+    def calculate_xp(cls, cr: str):
         xp_by_cr = {'0': 0,
                     '1/8': 25,
                     '1/4': 50,
