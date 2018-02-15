@@ -1,4 +1,4 @@
-element_type,element_name,description,gm_notes,CR,size,tags,interaction_result,race,disposition,inventory,ability,proficiency,difficulty,success,failure
+element_type,element_name,description,gm_notes,cr,size,tags,interaction_result,race,disposition,inventory,ability,proficiency,difficulty,success,failure
 Base,Wooden Chair,"A well-used wooden chair, crudely made.",,0,Small,neutral,,,,,,,,,
 Base,Skull Sconce,"A stone sconce, carved into a leering skull.",,0,Tiny,necromancy,,,,,,,,,
 Base,Mold Patch,A large patch of mottled grey mold clings to the ceiling.,Not actually dangerous,0,Large,ooze,,,,,,,,,
