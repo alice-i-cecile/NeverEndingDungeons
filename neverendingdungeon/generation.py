@@ -64,7 +64,7 @@ def select_elements(room, xp_budget: int, gold_budget: int):
 
     return room
 
-
+#TODO: add room flavour
 def populate_room(room: Room,
                   xp_budget: int = 0,
                   gold_budget: int = 0,
@@ -128,6 +128,7 @@ def populate_room(room: Room,
 
     return room
 
+# TODO: add more sophisticated layout algorithms
 def generate_dungeon_structure(n_rooms: int,
                                 layout: string = 'linear',
                                 **kwargs) -> Dungeon:
