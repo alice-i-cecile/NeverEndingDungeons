@@ -146,9 +146,14 @@ def generate_dungeon_structure(n_rooms: int,
         A barren dungeon with rooms that only have an ID and connections.
     """
 
-    universal_shape = [(0,0), (4,0), (4,4), (0,4)]
+    def shape_generation():
+        length = random.randrange(1,10)
+        width = random.randrange(1,10)
 
-    rooms = [Room(id=i, shape=universal_shape) for i in range(n_rooms)]
+        shape = [(0,0), (length,0), (length,width), (0,width)]
+        return shape
+
+    rooms = [Room(id=i, shape=shape_generation()) for i in range(n_rooms)]
 
     if layout == 'linear':
         for i in range(n_rooms - 1):
