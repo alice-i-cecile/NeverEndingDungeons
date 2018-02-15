@@ -84,7 +84,7 @@ class AbilityCheck(Element):
         self.failure = failure
 
 class Room:
-    def __init__(self, id: RoomID,
+    def __init__(self, id: int,
                 coord: Position = (0,0),
                 shape: List[Position] = [],
                 connections: List[Connection] = [],
