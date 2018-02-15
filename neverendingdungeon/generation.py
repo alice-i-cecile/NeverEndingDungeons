@@ -8,7 +8,7 @@ import random
 Dungeon = List[Room]
 
 # TODO: generalize for nonrectangular Rooms
-def place_element(room: Room, size: str = "Medium"):
+def place_element(room: Room, size: str = 'Medium'):
     x_coord = [l[0]] for l in r.shape]
     y_coord = [l[1]] for l in r.shape]
 
