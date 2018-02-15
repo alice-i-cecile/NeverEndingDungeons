@@ -8,7 +8,6 @@ import random
 Dungeon = List[Room]
 
 # TODO: generalize for nonrectangular Rooms
-# TODO: take size into account
 def place_element(room: Room, size: str = "Medium"):
     x_coord = [l[0]] for l in r.shape]
     y_coord = [l[1]] for l in r.shape]
@@ -45,7 +44,6 @@ def select_elements(room, xp_budget: int, gold_budget: int):
 
     current_gold = sum(e.gold for e in elements)
     if current_gold < gold_budget:
-        # TODO: implement treasure element type
         treasure_elements = element_df.query('tag == "treaure"')
 
         selected_treasure = random.choice(viable_elements.shape[0])
@@ -60,7 +58,6 @@ def select_elements(room, xp_budget: int, gold_budget: int):
 
     return room
 
-#TODO: add room flavour
 def populate_room(room: Room,
                   xp_budget: int = 0,
                   gold_budget: int = 0,
