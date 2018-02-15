@@ -9,8 +9,8 @@ Dungeon = List[Room]
 
 # TODO: generalize for nonrectangular Rooms
 def place_element(room: Room, size: str = 'Medium'):
-    x_coord = [l[0]] for l in r.shape]
-    y_coord = [l[1]] for l in r.shape]
+    x_coord = [l[0] for l in r.shape]
+    y_coord = [l[1] for l in r.shape]
 
     # Items are placed at the centers of squares but walls are on edges
     x_min, y_min = min(x_coord), min(y_coord)
@@ -133,7 +133,7 @@ def populate_room(room: Room,
 
 # TODO: add more sophisticated layout algorithms
 def generate_dungeon_structure(n_rooms: int,
-                                layout: string = 'linear',
+                                layout: str = 'linear',
                                 **kwargs) -> Dungeon:
     """Creates a barren, connected dungeon.
 
@@ -187,7 +187,7 @@ def generate_dungeon_structure(n_rooms: int,
 
 def generate_dungeon(n_rooms: int,
     party_level: int = 1, party_size: int = 4,
-    layout='linear': string, **kwargs) -> Dungeon:
+    layout: str = 'linear', **kwargs) -> Dungeon:
     """Creates a dungeon from scratch. Scales to level and size of party.
 
     Args:
