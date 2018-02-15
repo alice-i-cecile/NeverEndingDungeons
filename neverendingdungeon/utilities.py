@@ -62,3 +62,8 @@ def import_element(e_series):
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 
     return new_element
+
+
+def filter_by_tags(tags: str):
+    tags = tags.split(sep=', ')
+    return any(i in tags for i in valid_tags)

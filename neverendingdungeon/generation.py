@@ -25,11 +25,7 @@ def select_elements(room, xp_budget: int, gold_budget: int):
     tags = room.tags
     viable_tags = tags.append('neutral')
 
-    def filter_by_tags(tags):
-        tags = tags.split(sep=', ')
-        return any(i in tags for i in valid_tags)
-
-    viable_elements = element_df[filter_by_tags(element_df.tags)]
+    viable_elements = element_df[utilities.filter_by_tags(element_df.tags)]
 
     # TODO: switch to a nonconvex optimization approach
     current_xp = 0
@@ -123,6 +119,16 @@ def populate_room(room: Room,
     if tags is []:
         tags = random.choice(universal_tags)
     room.tags.append(tags)
+
+
+    viable_tags = room.tags.append('neutral')
+    viable_rooms = room_df[utilities.filter_by_tags(room_df.tags)]
+
+    selected_room = random.choice(viable_rooms.shape[0])
+    r_series = room_df.iloc[selected_element, ]
+
+    # TODO: follow other room rules here
+    room.flavour = r_series.flavour
 
     room.elements = select_elements(room, xp_budget, gold_budget, tags)
 
