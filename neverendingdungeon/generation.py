@@ -157,8 +157,16 @@ def generate_dungeon_structure(n_rooms: int,
 
     if layout == 'linear':
         for i in range(n_rooms - 1):
-            rooms[i].connections.append(i+1, '', (0,2)))
-            rooms[i+1].connections.append(i, '', (4,2)))
+
+            wall_a = max(l[1][0] for l in rooms[i].shape)
+            wall_b = 0
+            width_a = max(l[1][1] for l in rooms[i].shape) - 1
+            width_b = max(l[1][1] for l in rooms[i+1].shape) - 1
+
+            rooms[i].connections.append(i+1, '',
+                (wall_a, random.randrange(0, width_a)))
+            rooms[i+1].connections.append(i, '',
+                (wall_b,random.randrange(0, width_b)))
 
             rooms[i].coord = (4*i, 0)
 
