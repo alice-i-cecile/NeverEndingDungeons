@@ -11,6 +11,7 @@ Connection = Tuple[int, str, Position]
 
 # TODO: add method to generate from data.frame row
 # TODO: add docstrings
+# TODO: add xp and gold attributes
 class Element:
     def __init__(self,
                 name: str = '',

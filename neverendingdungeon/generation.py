@@ -7,6 +7,49 @@ import random
 
 Dungeon = List[Room]
 
+def select_elements(xp_budget: int, gold_budget: int, tags: Tags):
+
+    viable_tags = tags.append('neutral')
+
+    def filter_by_tags(tags):
+        tags = tags.split(sep=', ')
+        return any(i in tags for i in valid_tags)
+
+    viable_elements = element_df[filter_by_tags(element_df.tags)]
+
+    # TODO: switch to a nonconvex optimization approach
+    current_xp = 0
+    while current_xp < xp_budget & len(room.elements) < 5:
+
+        viable_elements = viable_elements.query('xp < xp_budget - current_xp')
+
+        selected_element = random.choice(viable_elements.shape[0])
+        e_series = element_df.iloc[selected_element, ]
+
+        new_element = utilities.import_element(e_series)
+
+        # TODO: generate within room bounds
+        new_element.location = (random.choice([0,1]), random.choice([0,1]))
+        room.elements.append(new_element)
+
+        current_xp += new_element.xp
+
+    current_gold = sum(e.gold for e in elements)
+    if current_gold < gold_budget:
+        # TODO: implement treasure element type
+        treasure_elements = element_df.query('tag == "treaure"')
+
+        selected_treasure = random.choice(viable_elements.shape[0])
+        treasure_series = element_df.iloc[selected_element, ]
+
+        treasure = utilities.import_element(e_series)
+
+        # TODO: generate within room bounds
+        treasure.location = (random.choice([0,1]), random.choice([0,1]))
+        treasure.gold = gold_budget - current_gold
+        room.elements.append(treasure)
+
+
 def populate_room(room: Room,
                   xp_budget: int = 0,
                   gold_budget: int = 0,
@@ -69,18 +112,7 @@ def populate_room(room: Room,
     # TODO: change to penalized optimization approach
     n_elements = random.randrange(1,5)
 
-    # TODO: add tag, xp, constraints
-    # TODO: use select_elements approach
-    for i in range(n_elements):
-
-        selected_element = random.choice(elements_df.shape[0])
-        e_series = element_df.iloc[selected_element, ]
-
-        new_element = utilities.import_element(e_series)
-
-        # TODO: generate within room bounds
-        element.location = (random.choice([0,1]), random.choice([0,1]))
-        room.elements.append(new_element)
+    room.elements = select_elements(xp_budget, gold_budget, tags)
 
     return room
 
