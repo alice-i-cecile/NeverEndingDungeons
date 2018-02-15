@@ -114,7 +114,7 @@ def populate_room(room: Room,
 
     room.safety = challenge_safety_mapping[challenge]
 
-    if tags is []:
+    if tags == []:
         tags = [random.choice(universal_tags)]
     room.tags += tags
 
