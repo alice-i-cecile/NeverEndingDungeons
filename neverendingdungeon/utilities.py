@@ -7,6 +7,8 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
+                              xp = e_series.xp,
+                              gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "))
     else if e_series.element_type == 'Interactable':
@@ -14,6 +16,8 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
+                              xp = e_series.xp,
+                              gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               interaction_result = e_series.interaction_result)
@@ -23,6 +27,8 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
+                              xp = e_series.xp,
+                              gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               race = e_series.race,
@@ -33,6 +39,8 @@ def import_element(e_series):
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
                               cr = e_series.cr,
+                              xp = e_series.xp,
+                              gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
                               ability = e_series.ability,

@@ -11,19 +11,26 @@ Connection = Tuple[int, str, Position]
 
 # TODO: add method to generate from data.frame row
 # TODO: add docstrings
-# TODO: add xp and gold attributes
+# TODO: add treasure subclass
+# TODO: make xp and gold derived @properties
 class Element:
     def __init__(self,
                 name: str = '',
                 description: str = '',
                 gm_notes: str = '',
                 cr: str = 0,
+                xp: int = 0,
+                gold: int =0,
+                xp: int = 0,
+                gold: int =0,
                 location: Position  = (-1, -1),
                 size: str = '',
                 tags: Tags = []):
         self.description = description
         self.gm_notes = gm_notes
         self.cr = cr
+        self.xp = xp
+        self.gold = gold
         self.location = location
         self.size = size
         self.tags = tags
@@ -34,11 +41,13 @@ class Interactable(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: str = 0,
+                xp: int = 0,
+                gold: int =0,
                 location: Position  = (-1, -1),
                 size: str = '',
                 tags: Tags = [],
                 interaction_result: str = ''):
-        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.interaction_result = interaction_result
 
 
@@ -50,13 +59,15 @@ class NPC(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: str = 0,
+                xp: int = 0,
+                gold: int = 0,
                 location: Position  = (-1, -1),
                 size: str = '',
                 tags: Tags = [],
                 race: str = '',
                 disposition: str = '',
                 inventory: List[str] = []):
-        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
         self.race = race
         self.disposition = disposition
         self.inventory = inventory
@@ -67,6 +78,8 @@ class AbilityCheck(Element):
                 description: str = '',
                 gm_notes: str = '',
                 cr: str = 0,
+                xp: int = 0,
+                gold: int =0,
                 location: Position  = (-1, -1),
                 size: str = '',
                 tags: Tags = [],
@@ -76,7 +89,7 @@ class AbilityCheck(Element):
                 success: str = '',
                 failure: str = ''):
 
-        super().__init__(self, name, description, gm_notes, cr, location, size, tags)
+        super().__init__(self, name, description, gm_notes, cr, xp, gold, location, size, tags)
 
         self.ability = ability
         self.proficiency = proficiency
