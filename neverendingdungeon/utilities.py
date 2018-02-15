@@ -24,7 +24,10 @@ def import_element(e_series):
                               tags = e_series.tags.split(sep=", "),
                               interaction_result = e_series.interaction_result)
     elif e_series.element_type == 'NPC':
-        e_series.inventory = str(e_series.inventory)
+        if str(e_series.inventory) == 'nan':
+            e_inventory = []
+        else:
+            e_inventory = e_series.inventory.split(sep=", ")
         new_element = NPC(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -34,7 +37,7 @@ def import_element(e_series):
                               tags = e_series.tags.split(sep=", "),
                               race = e_series.race,
                               disposition = e_series.disposition,
-                              inventory = e_series.inventory.split(sep=", "))
+                              inventory = e_inventory)
     elif e_series.element_type == 'AbilityCheck':
         new_element = AbilityCheck(name = e_series.name,
                               description = e_series.description,
@@ -49,7 +52,10 @@ def import_element(e_series):
                               success = e_series.success,
                               failure = e_series.failure)
     elif e_series.element_type == 'Treasure':
-        e_series.content = str(e_series.contents)
+        if str(e_series.content) == 'nan':
+            e_content = []
+        else:
+            e_content = e_series.content.split(sep=", ")
         new_element = Treasure(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -57,7 +63,7 @@ def import_element(e_series):
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
-                              contents = e_series.contents.split(sep=", "))
+                              contents = e_content)
     else:
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 
