@@ -44,14 +44,13 @@ def select_elements(room, xp_budget: int, gold_budget: int):
 
     current_gold = sum(e.gold for e in elements)
     if current_gold < gold_budget:
-        treasure_elements = element_df.query('tag == "treaure"')
+        treasure_elements = element_df[[utilities.filter_by_tags(r, ['treasure']) for r in element_df.tags]]
 
-        selected_treasure = random.choice(viable_elements.shape[0])
+        selected_treasure = treasure_elements.loc[random.choice(treasure_elements.index), ]
         treasure_series = element_df.iloc[selected_element, ]
 
         treasure = utilities.import_element(e_series)
 
-        # TODO: generate within room bounds
         treasure.location = place_element(room.shape, treasure.size)
         treasure.gold = gold_budget - current_gold
         elements.append(treasure)
