@@ -34,6 +34,10 @@ class Element:
         self.size = size
         self.tags = tags
 
+    def __str__(self):
+        pretty_str = str(vars(self))
+        return pretty_str
+
 class Interactable(Element):
     def __init__(self,
                 name: str = '',
@@ -133,3 +137,7 @@ class Room:
         self.challenge = challenge
         self.safety = safety
         self.tags = tags
+
+    def __str__(self):
+        pretty_str = str(vars(self))
+        return pretty_str
