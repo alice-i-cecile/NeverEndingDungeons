@@ -55,7 +55,7 @@ def import_element(e_series):
         if str(e_series.contents) == 'nan':
             e_contents = []
         else:
-            e_contents = e_series.content.split(sep=", ")
+            e_contents = e_series.contents.split(sep=", ")
         new_element = Treasure(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
