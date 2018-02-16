@@ -6,9 +6,11 @@ import generation
 import serialization
 
 my_tiny_dungeon = generation.generate_dungeon(n_rooms=1)
-print(my_tiny_dungeon)
+for room in my_tiny_dungeon:
+    print(room)
 serialization.generate_svg_map(my_tiny_dungeon, 'tiny')
 
 my_linear_dungeon = generation.generate_dungeon(n_rooms=5, layout='linear')
-print(my_linear_dungeon)
+for room in my_linear_dungeon:
+    print(room)
 serialization.generate_svg_map(my_tiny_dungeon, 'linear')
