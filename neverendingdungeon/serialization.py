@@ -8,20 +8,30 @@ from typing import List
 
 # TODO: add grid lines
 def generate_svg_map(dungeon: List[Room], dungeon_name: str ="dev"):
-    dmap = svgwrite.Drawing()
+    dmap = svgwrite.Drawing(filename=f"../output/{dungeon_name}_dungeonmap.svg", size=(10cm, 10cm))
 
-    # TODO: add connections
-    # TODO: add element locations
     def draw_room(room: Room):
         room_svg = svgwrite.container.Group()
-        abs_shape = room.shape + room.coord
+        abs_shape = [p + room.coord for p in room.shape]
 
-        walls_svg = svgwrite.Polygon(abs_shape)
-        return walls_svg
+        for c in room.connections:
+            c_start = c[2] + room.coord
+            c_end = (c_start[0], c_start[1] + 1)
+            c_svg = svgwrite.shapes.Line(start=c_start, end=c_end)
+            room_svg.add(c_svg)
+
+        for e in room.elements:
+            e_pos = e.location + room.coord
+            e_svg = svgwrite.shapes.Circle(center=(e_pos[0] + 0.5, e_pos[1] + 0.5))
+            room_svg.add(e_svg)
+
+        walls_svg = svgwrite.shapes.Polygon(abs_shape)
+        room_svg.add(walls_svg)
+        return room_svg
 
     for r in dungeon:
         dmap.add(draw_room(r))
 
-    dmap.saveas(f"../output/{dungeon_name}_dungeonmap.svg")
+    dmap.save()
 
     return dmap
