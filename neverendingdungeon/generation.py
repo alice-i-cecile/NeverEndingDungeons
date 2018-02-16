@@ -129,8 +129,8 @@ def generate_dungeon_structure(n_rooms: int,
     """
 
     def shape_generation():
-        length = random.randrange(1,10)
-        width = random.randrange(1,10)
+        length = random.randrange(2,10)
+        width = random.randrange(2,10)
 
         shape = [(0,0), (length,0), (length,width), (0,width)]
         return shape
@@ -144,23 +144,24 @@ def generate_dungeon_structure(n_rooms: int,
 
             rooms[i].coord = (current_x_offset, current_y_offset)
 
-            length = max(l[1][0] for l in rooms[i].shape)
-
-            if (i != n_rooms):
-                wall_a = max(l[1][0] for l in rooms[i].shape)
+            if i < (n_rooms - 1):
+                wall_a = max(l[0] for l in rooms[i].shape)
                 wall_b = 0
-                width_a = max(l[1][1] for l in rooms[i].shape) - 1
-                width_b = max(l[1][1] for l in rooms[i+1].shape) - 1
+                width_a = max(l[1] for l in rooms[i].shape) - 1
+                width_b = max(l[1] for l in rooms[i+1].shape) - 1
+
+                # FIXME: does not work for rooms of width 1
                 connection_a_y = random.randrange(0, width_a)
                 connection_b_y = random.randrange(0, width_b)
 
-                rooms[i].connections.append(i+1, '',
-                    (wall_a, connection_a_y))
-                rooms[i+1].connections.append(i, '',
-                    (wall_b, connection_b_y))
+                connection_a = (i+1, '', (wall_a, connection_a_y))
+                connection_b = (i, '', (wall_b, connection_b_y))
 
-            current_x_offset += length
-            current_y_offset += connection_a_y - connection_b_y
+                rooms[i].connections = rooms[i].connections + [connection_a]
+                rooms[i+1].connections = rooms[i+1].connections + [connection_b]
+
+                current_x_offset += wall_a
+                current_y_offset += connection_a_y - connection_b_y
     else:
         raise ValueError(f'Invalid layout {layout}')
 
