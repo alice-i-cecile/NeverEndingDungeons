@@ -13,7 +13,7 @@ Tags = List[str]
 Connection = Tuple[int, str, Position]
 
 # TODO: add docstrings
-# TODO: make gold derived properties
+# TODO: make gold derived property
 class Element:
     def __init__(self,
                 name: str = '',
