@@ -19,7 +19,7 @@ def generate_svg_map(dungeon: List[Room], dungeon_name: str ="dev"):
         walls_svg = svgwrite.Polygon(abs_shape)
         return walls_svg
 
-    for r in Dungeon:
+    for r in dungeon:
         dmap.add(draw_room(r))
 
     dmap.saveas(f"../output/{dungeon_name}_dungeonmap.svg")
