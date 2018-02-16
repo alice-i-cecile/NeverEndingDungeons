@@ -3,10 +3,11 @@
 from classes import *
 import generation
 import svgwrite
+from typing import List
 
 
 # TODO: add grid lines
-def generate_svg_map(dungeon: generation.Dungeon, dungeon_name: str ="dev"):
+def generate_svg_map(dungeon: List[Room], dungeon_name: str ="dev"):
     dmap = svgwrite.Drawing()
 
     # TODO: add connections
