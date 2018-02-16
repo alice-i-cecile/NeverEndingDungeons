@@ -37,7 +37,6 @@ def select_elements(room, xp_budget: int, gold_budget: int):
         new_element = utilities.import_element(e_series)
 
         new_element.location = place_element(room, new_element.size)
-        print(vars(new_element))
         elements.append(new_element)
 
         current_xp += new_element.xp
@@ -105,7 +104,6 @@ def populate_room(room: Room,
 
     room.elements = select_elements(room, xp_budget, gold_budget)
 
-    print(vars(room))
     return room
 
 # TODO: add more sophisticated layout algorithms
