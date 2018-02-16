@@ -96,8 +96,7 @@ def populate_room(room: Room,
 
     if tags == []:
         tags = [random.choice(universal_tags)]
-    new_tags = room.tags + tags
-    room.tags = new_tags
+    room.tags = room.tags + tags
 
     viable_tags = room.tags + ['neutral']
     viable_rooms = room_df[[utilities.filter_by_tags(r, viable_tags) for r in room_df.tags]]
