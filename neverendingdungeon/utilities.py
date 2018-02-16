@@ -52,10 +52,10 @@ def import_element(e_series):
                               success = e_series.success,
                               failure = e_series.failure)
     elif e_series.element_type == 'Treasure':
-        if str(e_series.content) == 'nan':
-            e_content = []
+        if str(e_series.contents) == 'nan':
+            e_contents = []
         else:
-            e_content = e_series.content.split(sep=", ")
+            e_contents = e_series.content.split(sep=", ")
         new_element = Treasure(name = e_series.name,
                               description = e_series.description,
                               gm_notes = e_series.gm_notes,
@@ -63,7 +63,7 @@ def import_element(e_series):
                               gold = e_series.gold,
                               size = e_series.size,
                               tags = e_series.tags.split(sep=", "),
-                              contents = e_content)
+                              contents = e_contents)
     else:
         raise ValueError(f'Invalid element_type {e_series.element_type}')
 
